@@ -3,14 +3,7 @@ import cssModules from 'react-css-modules';
 import Snackbar from 'material-ui/Snackbar';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import PropTypes from 'prop-types';
 
 import styles from './snack-bar-grid.css';
@@ -88,11 +81,7 @@ class SnackBarGrid extends Component {
     const inlineStyles = {
       border: '2px ridge #E0E0E0',
       width: '450px',
-      bodyStyle: {
-        display: 'flex',
-        flexDirection: 'row',
-        height: `${heightCalc}px`,
-      },
+      bodyStyle: { display: 'flex', flexDirection: 'row', height: `${heightCalc}px` },
     };
 
     return (

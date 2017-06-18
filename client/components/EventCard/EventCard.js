@@ -15,13 +15,8 @@ import styles from './event-card.css';
 class EventCard extends Component {
   constructor(props) {
     super(props);
-
     const { event, curUser } = props;
-    this.state = {
-      participants: props.event.participants,
-      event,
-      curUser,
-    };
+    this.state = { participants: props.event.participants, event, curUser };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -61,12 +56,8 @@ class EventCard extends Component {
 
     return (
       <Card styleName="card">
-        {
-          isOwner ? <DeleteModal event={event} cbEventDelete={this.handleDelete} /> : null
-        }
-        <CardTitle styleName="cardTitle">
-          {event.name}
-        </CardTitle>
+        { isOwner ? <DeleteModal event={event} cbEventDelete={this.handleDelete} /> : null }
+        <CardTitle styleName="cardTitle"> {event.name} </CardTitle>
         <CardText>
           <BestTimesDisplay event={event} disablePicker={false} />
           <ParticipantsList

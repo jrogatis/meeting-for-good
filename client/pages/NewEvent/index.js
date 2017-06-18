@@ -21,12 +21,7 @@ import styles from './new-event.css';
 class NewEvent extends React.Component {
   static removeRange = (ranges, range) => {
     const newRange = ranges.filter(r => !_.isEqual(r, range));
-    if (newRange.length === 0) {
-      return [{
-        from: null,
-        to: null,
-      }];
-    }
+    if (newRange.length === 0) return [{ from: null, to: null }];
     return newRange;
   };
 
@@ -57,7 +52,6 @@ class NewEvent extends React.Component {
   toggleSubmitDisabled() {
     // Checks whether the event name and dates/weekDays have been entered. If so, un-disable the
     // submit button. Otherwise, disable the submit button (if it isn't already');
-
     const { ranges, eventName } = this.state;
 
     if (ranges.length > 0 && ranges[0].from && eventName.length > 0) {
@@ -139,9 +133,7 @@ class NewEvent extends React.Component {
 
   @autobind
   handleSnackBarRequestClose() {
-    this.setState({
-      snackBarOpen: false,
-    });
+    this.setState({ snackBarOpen: false });
   }
 
   renderDayPicker() {
@@ -156,11 +148,7 @@ class NewEvent extends React.Component {
         <h6 styleName="heading-dates">What dates might work for you?</h6>
         <div styleName="reset-button">
           {from && to &&
-            <FlatButton
-              href="#reset"
-              label="reset"
-              onClick={this.handleResetClick}
-            />
+            <FlatButton href="#reset" label="reset" onClick={this.handleResetClick} />
           }
         </div>
         <DayPicker
