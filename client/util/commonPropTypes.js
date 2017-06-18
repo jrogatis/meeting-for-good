@@ -30,7 +30,6 @@ function isEvent(props, propName, componentName) {
   return (PropTypes.checkPropTypes(validator, propVal, 'props', componentName));
 }
 
-
 function isCurUser(props, propName, componentName) {
   const propVal = props[propName];
   const validator = {
