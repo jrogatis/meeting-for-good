@@ -12,6 +12,7 @@ import TextField from 'material-ui/TextField';
 import Subheader from 'material-ui/Subheader';
 import InputRange from 'react-input-range';
 import PropTypes from 'prop-types';
+import { isCurUser } from '../../util/commonPropTypes';
 
 import '../../styles/no-css-modules/react-input-range.css';
 import { formatTime, getHours, getMinutes } from '../../util/time-format';
@@ -226,6 +227,7 @@ NewEvent.defaultProps = {
   isAuthenticated: false,
   cbOpenLoginModal: () => { console.log('cbOpenLogModal func not passed in!'); },
   cbNewEvent: () => { console.log('cbNewEvent func not passed in!'); },
+  curUser: () => { console.log('curUser prop validation not set!'); },
 };
 
 NewEvent.propTypes = {
@@ -234,11 +236,7 @@ NewEvent.propTypes = {
   cbNewEvent: PropTypes.func,
 
   // Current user
-  curUser: PropTypes.shape({
-    _id: PropTypes.string,      // Unique user id
-    name: PropTypes.string,     // User name
-    avatar: PropTypes.string,   // URL to image representing user(?)
-  }).isRequired,
+  curUser: isCurUser,
 
 };
 

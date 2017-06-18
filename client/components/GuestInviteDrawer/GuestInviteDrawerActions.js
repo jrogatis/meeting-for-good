@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
 import { fullUrl, emailText } from './guestInviteDrawerUtils';
+import { isEvent } from '../../util/commonPropTypes';
 
 import styles from './guest-invite.css';
 
@@ -46,34 +47,11 @@ GuestInviteDrawerActions.defaultProps = {
   focusUrlTextField: () => { console.log('focusUrlTextField func not passed in!'); },
   handleCopyButtonClick: () => { console.log('handleCopyButtonClick func not passed in!'); },
   handleSendEmail: () => { console.log('handleSendEmail func not passed in!'); },
+  event: () => { console.log('event prop validation not set!'); },
 };
 
 GuestInviteDrawerActions.propTypes = {
-  event: PropTypes.shape({
-    _id: PropTypes.string,
-    name: PropTypes.string,
-    owner: PropTypes.string,
-    active: PropTypes.bool,
-    selectedTimeRange: PropTypes.array,
-    dates: PropTypes.arrayOf(PropTypes.shape({
-      fromDate: PropTypes.string,
-      toDate: PropTypes.string,
-      _id: PropTypes.string,
-    })),
-    participants: PropTypes.arrayOf(PropTypes.shape({
-      userId: PropTypes.shape({
-        id: PropTypes.string,
-        avatar: PropTypes.string,
-        name: PropTypes.string,
-        emails: PropTypes.arrayOf(PropTypes.string),
-      }),
-      _id: PropTypes.string,
-      status: PropTypes.oneOf([0, 1, 2, 3]),
-      emailUpdate: PropTypes.bool,
-      ownerNotified: PropTypes.bool,
-      availability: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
-    })),
-  }).isRequired,
+  event: isEvent,
   focusUrlTextField: PropTypes.func,
   handleCopyButtonClick: PropTypes.func,
   handleSendEmail: PropTypes.func,

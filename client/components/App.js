@@ -146,9 +146,7 @@ class App extends Component {
 
   @autobind
   handleLogin(curUser) {
-    if (Object.keys(curUser).length > 0) {
-      this.setState({ curUser, isAuthenticated: true });
-    }
+    if (Object.keys(curUser).length > 0) this.setState({ curUser, isAuthenticated: true });
   }
 
   @autobind

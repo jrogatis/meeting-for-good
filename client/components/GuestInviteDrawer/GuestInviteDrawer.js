@@ -21,6 +21,7 @@ import styles from './guest-invite.css';
 import { checkStatus, parseJSON } from '../../util/fetch.util';
 import nameInitials from '../../util/string.utils';
 import GuestInviteDrawerActions from './GuestInviteDrawerActions';
+import { isEvent, isCurUser } from '../../util/commonPropTypes';
 
 class GuestInviteDrawer extends Component {
   @autobind
@@ -49,6 +50,7 @@ class GuestInviteDrawer extends Component {
   async componentWillMount() {
     await this.loadPastGuests();
     const { event, open, curUser } = this.props;
+    console.log('gid event', event);
     this.setState({ event, open, curUser, activeCheckBoxes: [] });
   }
 
@@ -247,46 +249,16 @@ class GuestInviteDrawer extends Component {
 
 GuestInviteDrawer.defaultProps = {
   open: false,
+  event: () => { console.log('event prop validation not set!'); },
+  curUser: () => { console.log('curUser prop validation not set!'); },
 };
 
 GuestInviteDrawer.propTypes = {
-  // Current user
-  curUser: PropTypes.shape({
-    _id: PropTypes.string,      // Unique user id
-    name: PropTypes.string,     // User name
-    avatar: PropTypes.string,   // URL to image representing user(?)
-  }).isRequired,
-
   open: PropTypes.bool,
   cb: PropTypes.func.isRequired,
   cbInviteEmail: PropTypes.func.isRequired,
-
-  // Event containing list of event participants
-  event: PropTypes.shape({
-    _id: PropTypes.string,
-    name: PropTypes.string,
-    owner: PropTypes.string,
-    active: PropTypes.bool,
-    selectedTimeRange: PropTypes.array,
-    dates: PropTypes.arrayOf(PropTypes.shape({
-      fromDate: PropTypes.string,
-      toDate: PropTypes.string,
-      _id: PropTypes.string,
-    })),
-    participants: PropTypes.arrayOf(PropTypes.shape({
-      userId: PropTypes.shape({
-        id: PropTypes.string,
-        avatar: PropTypes.string,
-        name: PropTypes.string,
-        emails: PropTypes.arrayOf(PropTypes.string),
-      }),
-      _id: PropTypes.string,
-      status: PropTypes.oneOf([0, 1, 2, 3]),
-      emailUpdate: PropTypes.bool,
-      ownerNotified: PropTypes.bool,
-      availability: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
-    })),
-  }).isRequired,
+  curUser: isCurUser,
+  event: isEvent,
 };
 
 export default cssModules(GuestInviteDrawer, styles);
