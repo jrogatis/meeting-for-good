@@ -64,9 +64,7 @@ class SelectedDatesEditor extends Component {
     nEvent.dates = dateRangeReducer(selectedDates, event);
     const patchesforAddDates = jsonpatch.generate(observerEvent);
     const eventAvailFilter = filterAvailabilitysOutsideDatesRange(nEvent);
-    nEvent.participants.forEach((participant) => {
-      participant.availability = [];
-    });
+    nEvent.participants.forEach((participant) => { participant.availability = []; });
     const patchesforDeleteAvail = jsonpatch.generate(observerEvent);
     nEvent.participants.forEach((participant, index) => {
       participant.availability = eventAvailFilter.participants[index].availability;
@@ -118,12 +116,7 @@ class SelectedDatesEditor extends Component {
       <FlatButton label="save" secondary onTouchTap={this.handleEditEventDates} />,
     ];
     return (
-      <Dialog
-        title="Warning"
-        open={dialogWarningOpen}
-        actions={actions}
-        styleName="DialogWarningDate"
-      >
+      <Dialog title="Warning" open={dialogWarningOpen} actions={actions} styleName="DialogWarningDate" >
         <p> {'Perhaps you are deleting some existing availabilities.'} </p>
         <p> {'Are you sure you want to edit this/these dates? '}</p>
       </Dialog>

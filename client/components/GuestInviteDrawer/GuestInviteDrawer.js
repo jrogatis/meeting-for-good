@@ -20,7 +20,7 @@ import _ from 'lodash';
 import styles from './guest-invite.css';
 import { checkStatus, parseJSON } from '../../util/fetch.util';
 import nameInitials from '../../util/string.utils';
-import { fullUrl, emailText } from './guestInviteDrawerUtils';
+import GuestInviteDrawerActions from './GuestInviteDrawerActions';
 
 class GuestInviteDrawer extends Component {
   @autobind
@@ -147,6 +147,16 @@ class GuestInviteDrawer extends Component {
     }
   }
 
+  @autobind
+  focusUrlTextField(input) {
+    if (input) {
+      if (this.state.setFocusFullUrl) {
+        this.setState({ setFocusFullUrl: false });
+        setTimeout(() => { input.focus(); input.select(); }, 100);
+      }
+    }
+  }
+
   renderRows() {
     const { activeCheckBoxes, guestsToDisplay } = this.state;
     const inLineStyles = { listItem: { borderBottom: '1px solid #D4D4D4' } };
@@ -167,48 +177,6 @@ class GuestInviteDrawer extends Component {
       rows.push(row);
     });
     return rows;
-  }
-
-  renderUrlActions() {
-    const { event } = this.state;
-    const focusUrlTextField = (input) => {
-      if (input) {
-        if (this.state.setFocusFullUrl) {
-          this.setState({ setFocusFullUrl: false });
-          setTimeout(() => { input.focus(); input.select(); }, 100);
-        }
-      }
-    };
-    return (
-      <div>
-        <TextField
-          id="fullUrl"
-          styleName="textUrl"
-          value={fullUrl(event)}
-          underlineShow={false}
-          fullWidth
-          label="Full Url"
-          ref={focusUrlTextField}
-          aria-label="Full Url"
-        />
-        <div styleName="Row">
-          <RaisedButton
-            styleName="copyAndEmailButton"
-            className="cpBtn"
-            primary
-            onTouchTap={this.handleCopyButtonClick}
-            label="Copy Link"
-          />
-          <RaisedButton
-            styleName="copyAndEmailButton"
-            label="Send Email Invite"
-            primary
-            onClick={ev => this.handleSendEmail(ev)}
-            href={`mailto:?subject=Share your availability for ${event.name}&body=${emailText(event)}`}
-          />
-        </div>
-      </div>
-    );
   }
 
   renderSnackBar() {
@@ -247,7 +215,12 @@ class GuestInviteDrawer extends Component {
       >
         <LinearProgress style={inLineStyles.linearProgress} />
         <h3 styleName="header"> {event.name} </h3>
-        {this.renderUrlActions()}
+        <GuestInviteDrawerActions
+          event={event}
+          focusUrlTextField={this.focusUrlTextField}
+          handleCopyButtonClick={this.handleCopyButtonClick}
+          handleSendEmail={this.handleSendEmail}
+        />
         <Divider styleName="Divider" />
         <h6 styleName="inviteEventText">Recent Guests</h6>
         <div styleName="Row">

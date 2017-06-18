@@ -171,19 +171,15 @@ export const createGridComplete = (allDates, allTimes, event) => {
  * @param {*} grid
  */
 export const editParticipantToCellGrid = (
-  quarter, operation,
-  cellRowIndex,
-  cellColumnIndex,
-  cellInitialRow,
-  cellInitialColumn,
+  quarter, operation, cellRowIndex, cellColumnIndex, cellInitialRow, cellInitialColumn,
   curUser, grid) => {
   const nGrid = _.cloneDeep(grid);
   const rows = generateRange(cellInitialRow, cellRowIndex);
   const columns = generateRange(cellInitialColumn, cellColumnIndex);
 
   rows.forEach((row) => {
-    columns.forEach((cell) => {
-      const nQuarter = nGrid[row].quarters[cell];
+    columns.forEach((column) => {
+      const nQuarter = nGrid[row].quarters[column];
       const indexAtParticipant = _.findIndex(nQuarter.participants, curUser._id);
       const indexAtNotParticipant = _.findIndex(nQuarter.notParticipants, curUser._id);
       if (operation === 'add' && indexAtParticipant === -1) {
