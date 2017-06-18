@@ -12,6 +12,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 import styles from './best-times-display.css';
 import { renderTzInfo, renderRows, buildBestTimes } from './besttimesDisplayUtils';
+import { isEvent } from '../../util/commonPropTypes';
 
 class BestTimeDisplay extends Component {
 
@@ -28,17 +29,13 @@ class BestTimeDisplay extends Component {
   componentWillMount() {
     const { event, disablePicker } = this.props;
     const displayTimes = buildBestTimes(event);
-    this.setState({
-      event, displayTimes, disablePicker,
-    });
+    this.setState({ event, displayTimes, disablePicker });
   }
 
   componentWillReceiveProps(nextProps) {
     const { event, disablePicker } = nextProps;
     const displayTimes = buildBestTimes(event);
-    this.setState({
-      event, displayTimes, disablePicker,
-    });
+    this.setState({ event, displayTimes, disablePicker });
   }
 
   isBestTime() {
@@ -80,9 +77,7 @@ class BestTimeDisplay extends Component {
           nestedItems={renderRows(displayTimes[date].hours)}
         />);
       if (index !== Object.keys(displayTimes).length - 1 && index !== quantToShow - 1) {
-        rows.push(
-          <Divider key={`Divider ${date}`} styleName="Divider" />,
-        );
+        rows.push(<Divider key={`Divider ${date}`} styleName="Divider" />);
       }
       index += 1;
     }
@@ -174,37 +169,14 @@ class BestTimeDisplay extends Component {
 
 BestTimeDisplay.defaultProps = {
   disablePicker: false,
+  event: () => { console.log('event prop validation not set!'); },
 };
 
 BestTimeDisplay.propTypes = {
   disablePicker: PropTypes.bool,
 
   // Event containing list of event participants
-  event: PropTypes.shape({
-    _id: PropTypes.string,
-    name: PropTypes.string,
-    owner: PropTypes.string,
-    active: PropTypes.bool,
-    selectedTimeRange: PropTypes.array,
-    dates: PropTypes.arrayOf(PropTypes.shape({
-      fromDate: PropTypes.string,
-      toDate: PropTypes.string,
-      _id: PropTypes.string,
-    })),
-    participants: PropTypes.arrayOf(PropTypes.shape({
-      userId: PropTypes.shape({
-        id: PropTypes.string,
-        avatar: PropTypes.string,
-        name: PropTypes.string,
-        emails: PropTypes.arrayOf(PropTypes.string),
-      }),
-      _id: PropTypes.string,
-      status: PropTypes.oneOf([0, 1, 2, 3]),
-      emailUpdate: PropTypes.bool,
-      ownerNotified: PropTypes.bool,
-      availability: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
-    })),
-  }).isRequired,
+  event: isEvent,
 };
 
 export default cssModules(BestTimeDisplay, styles);
