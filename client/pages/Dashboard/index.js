@@ -83,12 +83,7 @@ class Dashboard extends Component {
     return (
       <Paper zDepth={0} styleName="wrapper">
         {/* New Event Icon */}
-        <FloatingActionButton
-          styleName="new-event-icon"
-          secondary
-          onClick={this.constructor.handleNewEvent}
-          aria-label="new event"
-        >
+        <FloatingActionButton styleName="new-event-icon" secondary onClick={this.constructor.handleNewEvent} aria-label="new event">
           <ContentAdd />
         </FloatingActionButton>
         {/* Card Template */}
@@ -106,9 +101,7 @@ class Dashboard extends Component {
             ))}
           </Masonry> :
           <div styleName="no-select-container">
-            <h4 styleName="no-select">
-              You have no current scheduled events.
-            </h4>
+            <h4 styleName="no-select">  You have no current scheduled events. </h4>
             <DateRangeIcon styleName="no-selectIcon" />
           </div>
         }

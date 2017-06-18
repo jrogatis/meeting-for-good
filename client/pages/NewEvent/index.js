@@ -12,6 +12,7 @@ import TextField from 'material-ui/TextField';
 import Subheader from 'material-ui/Subheader';
 import InputRange from 'react-input-range';
 import PropTypes from 'prop-types';
+import { isCurUser } from '../../util/commonPropTypes';
 
 import '../../styles/no-css-modules/react-input-range.css';
 import { formatTime, getHours, getMinutes } from '../../util/time-format';
@@ -21,12 +22,7 @@ import styles from './new-event.css';
 class NewEvent extends React.Component {
   static removeRange = (ranges, range) => {
     const newRange = ranges.filter(r => !_.isEqual(r, range));
-    if (newRange.length === 0) {
-      return [{
-        from: null,
-        to: null,
-      }];
-    }
+    if (newRange.length === 0) return [{ from: null, to: null }];
     return newRange;
   };
 
@@ -57,7 +53,6 @@ class NewEvent extends React.Component {
   toggleSubmitDisabled() {
     // Checks whether the event name and dates/weekDays have been entered. If so, un-disable the
     // submit button. Otherwise, disable the submit button (if it isn't already');
-
     const { ranges, eventName } = this.state;
 
     if (ranges.length > 0 && ranges[0].from && eventName.length > 0) {
@@ -139,9 +134,7 @@ class NewEvent extends React.Component {
 
   @autobind
   handleSnackBarRequestClose() {
-    this.setState({
-      snackBarOpen: false,
-    });
+    this.setState({ snackBarOpen: false });
   }
 
   renderDayPicker() {
@@ -156,11 +149,7 @@ class NewEvent extends React.Component {
         <h6 styleName="heading-dates">What dates might work for you?</h6>
         <div styleName="reset-button">
           {from && to &&
-            <FlatButton
-              href="#reset"
-              label="reset"
-              onClick={this.handleResetClick}
-            />
+            <FlatButton href="#reset" label="reset" onClick={this.handleResetClick} />
           }
         </div>
         <DayPicker
@@ -238,6 +227,7 @@ NewEvent.defaultProps = {
   isAuthenticated: false,
   cbOpenLoginModal: () => { console.log('cbOpenLogModal func not passed in!'); },
   cbNewEvent: () => { console.log('cbNewEvent func not passed in!'); },
+  curUser: () => { console.log('curUser prop validation not set!'); },
 };
 
 NewEvent.propTypes = {
@@ -246,11 +236,7 @@ NewEvent.propTypes = {
   cbNewEvent: PropTypes.func,
 
   // Current user
-  curUser: PropTypes.shape({
-    _id: PropTypes.string,      // Unique user id
-    name: PropTypes.string,     // User name
-    avatar: PropTypes.string,   // URL to image representing user(?)
-  }).isRequired,
+  curUser: isCurUser,
 
 };
 

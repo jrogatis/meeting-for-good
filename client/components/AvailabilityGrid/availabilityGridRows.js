@@ -4,6 +4,7 @@ import cssModules from 'react-css-modules';
 import styles from './availability-grid.css';
 
 import CellGrid from '../CellGrid/CellGrid';
+import { isCurUser } from '../../util/commonPropTypes';
 
 const Cell = (quarter, columnIndex, props) => {
   const { backgroundColors, showHeatmap, curUser, rowIndex,
@@ -47,6 +48,7 @@ Cell.defaultProps = {
   handleCellMouseLeave: () => { console.log('ediAvail func not passed in!'); },
   handleCellMouseDown: () => { console.log('ediAvail func not passed in!'); },
   handleCellMouseUp: () => { console.log('ediAvail func not passed in!'); },
+  curUser: () => { console.log('curUser prop validation not set!'); },
 };
 
 GridRow.propTypes = {
@@ -58,11 +60,7 @@ Cell.propTypes = {
   backgroundColors: PropTypes.arrayOf(PropTypes.string).isRequired,
   showHeatmap: PropTypes.bool.isRequired,
   rowIndex: PropTypes.number.isRequired,
-  curUser: PropTypes.shape({
-    _id: PropTypes.string,      // Unique user id
-    name: PropTypes.string,     // User name
-    avatar: PropTypes.string,   // URL to image representing user(?)
-  }).isRequired,
+  curUser: isCurUser,
   heightlightedUser: PropTypes.string,
   handleCellMouseOver: PropTypes.func,
   handleCellMouseLeave: PropTypes.func,
