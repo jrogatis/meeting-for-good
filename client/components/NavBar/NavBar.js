@@ -17,6 +17,7 @@ import Dialog from 'material-ui/Dialog';
 import NotificationBar from '../NotificationBar/NotificationBar';
 import avatarPlaceHolder from '../../assets/Profile_avatar_placeholder_large.png';
 import nameInitials from '../../util/string.utils';
+import GoogleCalendarManager from '../GoogleCalendarManager/GoogleCalendarManager';
 import styles from './nav-bar.css';
 
 class NavBar extends Component {
@@ -38,6 +39,7 @@ class NavBar extends Component {
       showPastEvents,
       events,
       openModalAbout: false,
+      openDialogGoogleCalendar: false,
     };
   }
 
@@ -67,6 +69,11 @@ class NavBar extends Component {
   }
 
   @autobind
+  handleAboutDialog() {
+    this.setState({ openModalAbout: true });
+  }
+
+  @autobind
   handleFilterToggle(ev, isInputChecked) {
     sessionStorage.setItem('showPastEvents', isInputChecked);
     this.props.cbFilter(isInputChecked);
@@ -77,11 +84,20 @@ class NavBar extends Component {
     this.props.cbHandleDismissGuest(participantId);
   }
 
+  @autobind
+  handleOpenDialogGoogleCalendar() {
+    this.setState({ openDialogGoogleCalendar: true });
+  }
+
   renderAvatarMenu() {
     const { curUser, userAvatar, showPastEvents } = this.state;
     const inLineStyles = {
-      iconMenu: { iconStyle: { minWidth: 70, display: 'flex', flexDirection: 'row', alignItems: 'center' },
-        toggle: { label: { fontSize: '18px' }, thumbSwitched: { backgroundColor: 'red' } } } };
+      iconMenu: {
+        iconStyle: { minWidth: 70, display: 'flex', flexDirection: 'row', alignItems: 'center' },
+        toggle: { label: { fontSize: '18px' }, thumbSwitched: { backgroundColor: 'red' } },
+        menuItem: { maxHeight: '30px', minHeight: '20px', lineHeight: '25px' },
+      },
+    };
 
     return (
       <IconMenu
@@ -110,24 +126,30 @@ class NavBar extends Component {
         </MenuItem >
         <Divider styleName="Divider" />
         <MenuItem
+          onClick={this.handleOpenDialogGoogleCalendar}
+          styleName="AboutButton"
+          primaryText="Calendar Sets"
+          style={inLineStyles.iconMenu.menuItem}
+        />
+        <MenuItem
           onClick={this.handleAboutDialog}
           styleName="AboutButton"
           primaryText="About"
-          style={{ maxHeight: '30px', minHeight: '20px', lineHeight: '25px' }}
+          style={inLineStyles.iconMenu.menuItem}
         />
         <MenuItem
           href={'/api/auth/logout'}
           styleName="LogoutButton"
           primaryText="Logout"
-          style={{ maxHeight: '30px', minHeight: '20px', lineHeight: '25px' }}
+          style={inLineStyles.iconMenu.menuItem}
         />
       </IconMenu>
     );
   }
 
   renderRightGroup() {
-    const { toggleVisible, isAuthenticated, curUser, events } = this.state;
-
+    const {
+      toggleVisible, isAuthenticated, curUser, events, openDialogGoogleCalendar } = this.state;
     if (isAuthenticated) {
       return (
         <ToolbarGroup lastChild styleName="rightToolbarGroup" >
@@ -146,6 +168,11 @@ class NavBar extends Component {
             : null
           }
           {this.renderAvatarMenu()}
+          { this.renderDialog() }
+          <GoogleCalendarManager
+            curUser={curUser}
+            openDialogGoogleCalendar={openDialogGoogleCalendar}
+          />
         </ToolbarGroup>
       );
     }
@@ -199,7 +226,6 @@ class NavBar extends Component {
       <Toolbar styleName="toolBar" >
         {this.renderLeftGroup()}
         {this.renderRightGroup()}
-        {this.renderDialog()}
       </Toolbar>
     );
   }
