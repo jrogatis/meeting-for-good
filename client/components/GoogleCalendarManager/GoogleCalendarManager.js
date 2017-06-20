@@ -4,6 +4,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
+import autobind from 'autobind-decorator';
 
 import { isCurUser } from '../../util/commonPropTypes';
 
@@ -23,6 +24,11 @@ class GoogleCalendarManager extends Component() {
     };
   }
 
+  @autobind
+  handleDialogClose() {
+    this.setState({ openDialog: false });
+  }
+
   render() {
     const { dialogActions } = this.constructor;
     return (
@@ -30,7 +36,7 @@ class GoogleCalendarManager extends Component() {
         title=" Your Calendar Settings"
         modal
         open={this.state.openDialog}
-        actions={dialogActions}
+        actions={dialogActions(this.handleDialogClose)}
       >
         bla
       </Dialog>

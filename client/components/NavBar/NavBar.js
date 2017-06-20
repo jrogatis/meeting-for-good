@@ -37,7 +37,7 @@ class NavBar extends Component {
       toggleVisible: true,
       showPastEvents,
       events,
-      openModal: false,
+      openModalAbout: false,
     };
   }
 
@@ -64,11 +64,6 @@ class NavBar extends Component {
   @autobind
   handleAuthClick() {
     this.props.cbOpenLoginModal('/dashboard');
-  }
-
-  @autobind
-  handleAboutDialog() {
-    this.setState({ openModal: true });
   }
 
   @autobind
@@ -167,8 +162,8 @@ class NavBar extends Component {
   }
 
   renderDialog() {
-    const { openModal } = this.state;
-    const actions = [<FlatButton label="close" primary onTouchTap={() => this.setState({ openModal: false })} />];
+    const { openModalAbout } = this.state;
+    const actions = [<FlatButton label="close" primary onTouchTap={() => this.setState({ openModalAbout: false })} />];
     const inlineStyles = {
       modal: { content: { width: '630px', maxWidth: '630px' }, bodyStyle: { paddingTop: 10, fontSize: '25px' } } };
     return (
@@ -178,7 +173,7 @@ class NavBar extends Component {
         actions={actions}
         modal
         styleName="AboutDialog"
-        open={openModal}
+        open={openModalAbout}
       >
         <h1 styleName="titleStyle">Meeting for Good</h1>
         <h6 styleName="versionStyle">Version {process.env.versionNumber}</h6>
