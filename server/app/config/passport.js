@@ -1,12 +1,12 @@
 import User from '../../api/user/user.model';
 
 module.exports = (passport) => {
-  passport.serializeUser((user, done) => {
-    done(null, user.id);
+  passport.serializeUser((data, done) => {
+    done(null, data);
   });
 
-  passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
+  passport.deserializeUser((data, done) => {
+    User.findById(data.id, (err, user) => {
       done(err, user);
     });
   });

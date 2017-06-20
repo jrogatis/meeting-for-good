@@ -1,4 +1,5 @@
 import passport from 'passport';
+import _ from 'lodash';
 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -11,8 +12,10 @@ export const setup = (User, config) => {
     process.nextTick(() => {
       User.findOne({ googleId: profile.id }, (err, user) => {
         if (err) return done(err);
-        if (user) return done(null, user);
-
+        if (user) {
+          const data = { id: user._id, googleToken: token };
+          return done(null, data);
+        }
         const newUser = new User();
         newUser.googleId = profile.id;
         newUser.name = profile.displayName;
@@ -24,7 +27,8 @@ export const setup = (User, config) => {
         newUser.emails = emailToAdd;
         newUser.save((err) => {
           if (err) throw err;
-          return done(null, newUser);
+          const data = { id: user._id, googleToken: token };
+          return done(null, data);
         });
       });
     });
