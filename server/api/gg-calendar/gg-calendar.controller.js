@@ -1,19 +1,15 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
- * GET     /api/ggCalendar                          ->  index
+ * GET     /api/ggCalendar/list                      ->  listCalendars
  */
 
 const gcal = require('google-calendar');
 
-export const index = (req, res) => {
-  console.log('index', req.session.passport.user.googleToken);
-  const googleCalendar = new gcal.GoogleCalendar(req.session.passport.user.googleToken);
-  googleCalendar.calendarList.list((err, calendarList) => {
-    if (err) {
-      console.log(err);
-    }
-    console.log(calendarList);
+export const listCalendars = (req, res) => {
+  if (!req.session.passport.user.googleToken) return res.redirect('/auth');
+  gcal(req.session.passport.user.googleToken).calendarList.list((err, data) => {
+    if (err) return res.status(500).send(err);
+    return res.send(data);
   });
-  res.end('ok', 200);
 };
 

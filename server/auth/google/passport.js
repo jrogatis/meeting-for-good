@@ -1,5 +1,4 @@
 import passport from 'passport';
-import _ from 'lodash';
 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -8,7 +7,6 @@ export const setup = (User, config) => {
     clientID: config.googleAuth.clientID,
     clientSecret: config.googleAuth.clientSecret,
     callbackURL: config.googleAuth.callbackURL,
-    scope: ['https://www.googleapis.com/auth/calendar.readonly'],
   }, (token, refreshToken, profile, done) => {
     process.nextTick(() => {
       User.findOne({ googleId: profile.id }, (err, user) => {

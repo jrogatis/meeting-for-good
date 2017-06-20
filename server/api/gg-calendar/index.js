@@ -10,6 +10,6 @@ const isAuthenticated = (req, res, next) => {
   return res.status(403).send('Authentication required.');
 };
 
-router.get('/', isAuthenticated, controller.index);
+router.get('/list', isAuthenticated, controller.listCalendars);
 
 module.exports = router;
