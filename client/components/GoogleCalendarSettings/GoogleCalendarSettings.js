@@ -62,7 +62,7 @@ class GoogleCalendarSettings extends Component {
 
   renderTableRows() {
     const { listCal } = this.state;
-    if (listCal.length === 0) { return null; }
+    if (listCal.length === 0) return null;
     const rows = [];
     listCal.items.forEach((calendar) => {
       rows.push(
@@ -71,7 +71,6 @@ class GoogleCalendarSettings extends Component {
         </TableRow>,
       );
     });
-    console.log(rows);
     const result = (<TableBody> {rows} </TableBody>);
     return result;
   }
