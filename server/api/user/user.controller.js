@@ -11,35 +11,15 @@
  *GET     /api/user/relatedUsers/     -> relatedUsers
  */
 
-import jsonpatch from 'fast-json-patch';
 import Users from './user.model';
 import Events from '../events/events.model';
-import { respondWithResult } from '../utils/api.utils';
+import { respondWithResult, patchUpdates, removeEntity } from '../utils/api.utils';
 
 const handleError = (res, statusCode) => {
   statusCode = statusCode || 500;
   return (err) => {
     res.status(statusCode).send(err);
   };
-};
-
-const patchUpdates = patches => (entity) => {
-  try {
-    jsonpatch.applyPatch(entity, patches, /* validate */ true);
-  } catch (err) {
-    console.log('err at patches', err);
-    return Promise.reject(err);
-  }
-  return entity.save();
-};
-
-const removeEntity = res => (entity) => {
-  if (entity) {
-    return entity.remove()
-      .then(() => {
-        res.status(204).end();
-      });
-  }
 };
 
 const handleEntityNotFound = res => (entity) => {

@@ -15,29 +15,8 @@
 
 'use strict';
 
-import jsonpatch from 'fast-json-patch';
 import Events from './events.model';
-import { respondWithResult } from '../utils/api.utils';
-
-const patchUpdates = patches => (entity) => {
-  try {
-    jsonpatch.applyPatch(entity, patches, /* validate */ true);
-  } catch (err) {
-    console.log('err at patches', err);
-    return Promise.reject(err);
-  }
-  return entity.save();
-};
-
-const removeEntity = res =>
-  (entity) => {
-    if (entity) {
-      return entity.remove()
-        .then(() => {
-          res.status(204).end();
-        });
-    }
-  };
+import { respondWithResult, patchUpdates, removeEntity } from '../utils/api.utils';
 
 const handleEntityNotFound = res =>
   (entity) => {
