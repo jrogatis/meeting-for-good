@@ -19,11 +19,7 @@ export const setup = (User, config) => {
         newUser.googleId = profile.id;
         newUser.name = profile.displayName;
         newUser.avatar = profile.photos[0].value;
-        const emailToAdd = [];
-        profile.emails.forEach((email) => {
-          emailToAdd.push(email.value);
-        });
-        newUser.emails = emailToAdd;
+        profile.emails.forEach((email) => { newUser.emails.push(email.value); });
         newUser.save((err) => {
           if (err) throw err;
           const data = { id: user._id, googleToken: token };
