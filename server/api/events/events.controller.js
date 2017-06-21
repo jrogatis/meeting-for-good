@@ -17,17 +17,7 @@
 
 import jsonpatch from 'fast-json-patch';
 import Events from './events.model';
-
-
-const respondWithResult = (res, statusCode) => {
-  statusCode = statusCode || 200;
-  return (entity) => {
-    if (entity) {
-      return res.status(statusCode).json(entity);
-    }
-    return null;
-  };
-};
+import { respondWithResult } from '../utils/api.utils';
 
 const patchUpdates = patches => (entity) => {
   try {
