@@ -34,7 +34,7 @@ const IconBtn = (props) => {
   );
 };
 
-const GoogleCalSetItem = (props) => {
+const GoogleCalSetMenuItem = (props) => {
   const { toggleCalSetDialog } = props;
   return (
     <MenuItem
@@ -87,7 +87,7 @@ const MenuItems = props => (
   <span>
     {PastEventsMenuItem(props)}
     <Divider styleName="Divider" />
-    {GoogleCalSetItem(props)}
+    {GoogleCalSetMenuItem(props)}
     {AboutMenuItem(props)}
     {LogoutMenuItem()}
   </span>
@@ -111,7 +111,7 @@ IconBtn.defaultProps = {
 };
 
 
-GoogleCalSetItem.propTypes = {
+GoogleCalSetMenuItem.propTypes = {
   toggleCalSetDialog: PropTypes.func.isRequired,
 };
 

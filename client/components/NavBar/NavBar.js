@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import NotificationBar from '../NotificationBar/NotificationBar';
 import avatarPlaceHolder from '../../assets/Profile_avatar_placeholder_large.png';
 
-import GoogleCalendarManager from '../GoogleCalendarManager/GoogleCalendarManager';
+import GoogleCalendarSettings from '../GoogleCalendarSettings/GoogleCalendarSettings';
 import AboutDialog from '../AboutDialog/AboutDialog';
 import AvatarMenu from '../NavBar/NavBarAvatarMenu';
 import styles from './nav-bar.css';
@@ -77,6 +77,7 @@ class NavBar extends Component {
 
   @autobind
   toggleCalSetDialog() {
+    console.log(this.state.openModalCalSet);
     this.setState({ openModalCalSet: !this.state.openModalCalSet });
   }
 
@@ -90,7 +91,7 @@ class NavBar extends Component {
   HandleDismissGuest(participantId) {
     this.props.cbHandleDismissGuest(participantId);
   }
-  
+
   renderRightGroup() {
     const {
       toggleVisible,
@@ -112,7 +113,6 @@ class NavBar extends Component {
             </FlatButton>
             : null
           }
-
           <AvatarMenu
             curUser={curUser}
             userAvatar={userAvatar}
@@ -122,7 +122,10 @@ class NavBar extends Component {
             toggleCalSetDialog={this.toggleCalSetDialog}
           />
           <AboutDialog cbOpenModal={this.toggleAboutDialog} openModal={openModalAbout} />
-          <GoogleCalendarManager cbOpenModal={this.toggleCalSetDialog} openModal={openModalCalSet} />
+          <GoogleCalendarSettings
+            cbToggleCalSetDialog={this.toggleCalSetDialog}
+            openModalCalSet={openModalCalSet}
+          />
         </ToolbarGroup>
       );
     }
