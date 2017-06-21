@@ -165,7 +165,7 @@ export const relatedUsers = (req, res) => {
     });
 };
 
-export const isAuthenticated = (req, res) => {
+export const isUserAuthenticated = (req, res) => {
   if (req.user) return res.status(200).json({ isAuthenticated: true });
   return res.status(200).json({ isAuthenticated: false });
 };

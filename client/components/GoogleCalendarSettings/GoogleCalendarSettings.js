@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import cssModules from 'react-css-modules';
+// import cssModules from 'react-css-modules';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+// import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
 import { listCalendars } from '../../util/calendar';
-import { isCurUser } from '../../util/commonPropTypes';
+// import { isCurUser } from '../../util/commonPropTypes';
 
 const inlineStyles = {
   modal: {

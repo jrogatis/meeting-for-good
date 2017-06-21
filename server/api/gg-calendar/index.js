@@ -1,15 +1,12 @@
 'use strict';
 
-const express = require('express');
-const controller = require('./gg-calendar.controller');
+import express from 'express';
+import { listCalendars } from './gg-calendar.controller';
+import isAuthenticated from '../utils/api.utils';
 
 const router = express.Router();
 
-const isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) return next();
-  return res.status(403).send('Authentication required.');
-};
 
-router.get('/list', isAuthenticated, controller.listCalendars);
+router.get('/list', isAuthenticated, listCalendars);
 
 module.exports = router;

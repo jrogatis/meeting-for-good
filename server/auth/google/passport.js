@@ -11,7 +11,10 @@ export const setup = (User, config) => {
     process.nextTick(() => {
       User.findOne({ googleId: profile.id }, (err, user) => {
         if (err) return done(err);
-        if (user) done(null, { id: user._id, googleToken: token });
+        if (user) {
+          const data = { id: user._id, googleToken: token };
+          return done(null, data);
+        }
         const newUser = new User();
         newUser.googleId = profile.id;
         newUser.name = profile.displayName;
@@ -19,7 +22,8 @@ export const setup = (User, config) => {
         profile.emails.forEach((email) => { newUser.emails.push(email.value); });
         newUser.save((err) => {
           if (err) throw err;
-          return done(null, { id: user._id, googleToken: token });
+          const data = { id: newUser._id, googleToken: token };
+          return done(null, data);
         });
       });
     });
