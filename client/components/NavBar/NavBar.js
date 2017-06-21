@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import NotificationBar from '../NotificationBar/NotificationBar';
 import avatarPlaceHolder from '../../assets/Profile_avatar_placeholder_large.png';
 
-import GoogleCalendarManager from '../GoogleCalendarManager/GoogleCalendarManager';
 import AboutDialog from '../AboutDialog/AboutDialog';
 import AvatarMenu from '../NavBar/NavBarAvatarMenu';
 import styles from './nav-bar.css';
@@ -33,7 +32,6 @@ class NavBar extends Component {
       showPastEvents,
       events,
       openModalAbout: false,
-      openDialogGoogleCalendar: false,
     };
   }
 
@@ -79,11 +77,6 @@ class NavBar extends Component {
     this.props.cbHandleDismissGuest(participantId);
   }
 
-  @autobind
-  handleOpenDialogGoogleCalendar() {
-    this.setState({ openDialogGoogleCalendar: true });
-  }
-
   renderRightGroup() {
     const {
       toggleVisible,
@@ -127,29 +120,6 @@ class NavBar extends Component {
           Sign In
         </FlatButton>
       </ToolbarGroup>
-    );
-  }
-
-  renderDialog() {
-    const { openModalAbout } = this.state;
-    const actions = [<FlatButton label="close" primary onTouchTap={() => this.setState({ openModalAbout: false })} />];
-    const inlineStyles = {
-      modal: { content: { width: '630px', maxWidth: '630px' }, bodyStyle: { paddingTop: 10, fontSize: '25px' } } };
-    return (
-      <Dialog
-        contentStyle={inlineStyles.modal.content}
-        bodyStyle={inlineStyles.modal.bodyStyle}
-        actions={actions}
-        modal
-        styleName="AboutDialog"
-        open={openModalAbout}
-      >
-        <h1 styleName="titleStyle">Meeting for Good</h1>
-        <h6 styleName="versionStyle">Version {process.env.versionNumber}</h6>
-        <h4 styleName="descStyle">THE BEST MEETING COORDINATION APP</h4>
-        <h6>Created by campers from <a href="https://www.freecodecamp.com">FreeCodeCamp</a></h6>
-        <h6><a href="https://github.com/freeCodeCamp/meeting-for-good/"> License and GitHub Repository</a></h6>
-      </Dialog>
     );
   }
 

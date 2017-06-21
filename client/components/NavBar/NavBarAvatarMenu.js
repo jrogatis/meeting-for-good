@@ -10,6 +10,7 @@ import Divider from 'material-ui/Divider';
 import Toggle from 'material-ui/Toggle';
 import PropTypes from 'prop-types';
 import { isCurUser } from '../../util/commonPropTypes';
+import GoogleCalendarManager from '../GoogleCalendarManager/GoogleCalendarManager';
 
 import nameInitials from '../../util/string.utils';
 import styles from './nav-bar.css';
@@ -33,36 +34,51 @@ const IconBtn = (props) => {
   );
 };
 
-const MenuItems = (props) => {
-  const { showPastEvents, handleFilterToggle, toggleAboutDialog } = props;
+const AboutMenuItem = (props) => {
+  const { toggleAboutDialog } = props;
   return (
-    <span>
-      <MenuItem style={{ maxHeight: '30px', minHeight: '20px' }} >
-        <Toggle
-          label={'Past Events'}
-          toggled={showPastEvents}
-          styleName="Toggle"
-          labelStyle={inLineStyles.iconMenu.toggle.label}
-          thumbSwitchedStyle={inLineStyles.iconMenu.toggle.thumbSwitched}
-          onToggle={handleFilterToggle}
-        />
-      </MenuItem >
-      <Divider styleName="Divider" />
-      <MenuItem
-        onClick={toggleAboutDialog}
-        styleName="AboutButton"
-        primaryText="About"
-        style={{ maxHeight: '30px', minHeight: '20px', lineHeight: '25px' }}
-      />
-      <MenuItem
-        href={'/api/auth/logout'}
-        styleName="LogoutButton"
-        primaryText="Logout"
-        style={{ maxHeight: '30px', minHeight: '20px', lineHeight: '25px' }}
-      />
-    </span>
+    <MenuItem
+      onClick={toggleAboutDialog}
+      styleName="AboutButton"
+      primaryText="About"
+      style={{ maxHeight: '30px', minHeight: '20px', lineHeight: '25px' }}
+    />
   );
 };
+
+const PastEventsMenuItem = (props) => {
+  const { showPastEvents, handleFilterToggle } = props;
+  return (
+    <MenuItem style={{ maxHeight: '30px', minHeight: '20px' }} >
+      <Toggle
+        label={'Past Events'}
+        toggled={showPastEvents}
+        styleName="Toggle"
+        labelStyle={inLineStyles.iconMenu.toggle.label}
+        thumbSwitchedStyle={inLineStyles.iconMenu.toggle.thumbSwitched}
+        onToggle={handleFilterToggle}
+      />
+    </MenuItem >
+  );
+};
+
+const LogoutMenuItem = () => (
+  <MenuItem
+    href={'/api/auth/logout'}
+    styleName="LogoutButton"
+    primaryText="Logout"
+    style={{ maxHeight: '30px', minHeight: '20px', lineHeight: '25px' }}
+  />
+);
+
+const MenuItems = props => (
+  <span>
+    {PastEventsMenuItem(props)}
+    <Divider styleName="Divider" />
+    {AboutMenuItem(props)}
+    {LogoutMenuItem()}
+  </span>
+);
 
 const AvatarMenu = props => (
   <IconMenu
@@ -87,9 +103,12 @@ IconBtn.propTypes = {
   userAvatar: PropTypes.string.isRequired,
 };
 
-MenuItems.propTypes = {
+PastEventsMenuItem.propTypes = {
   showPastEvents: PropTypes.bool.isRequired,
   handleFilterToggle: PropTypes.func.isRequired,
+};
+
+AboutMenuItem.propTypes = {
   toggleAboutDialog: PropTypes.func.isRequired,
 };
 
