@@ -21,6 +21,14 @@ class NavBar extends Component {
     browserHistory.push('/dashboard');
   }
 
+  static donateButton() {
+    return (
+      <FlatButton href="https://www.freecodecamp.com/donate/" styleName="donateButton" aria-label="Donate">
+        Donate
+      </FlatButton>)
+      ;
+  }
+
   constructor(props) {
     super(props);
     const { isAuthenticated, curUser, showPastEvents, events } = this.props;
@@ -33,6 +41,7 @@ class NavBar extends Component {
       showPastEvents,
       events,
       openModalAbout: false,
+      openModalCalSet: false,
     };
   }
 
@@ -63,7 +72,12 @@ class NavBar extends Component {
 
   @autobind
   toggleAboutDialog() {
-    this.setState({ openModal: !this.state.openModalAbout });
+    this.setState({ openModalAbout: !this.state.openModalAbout });
+  }
+
+  @autobind
+  toggleCalSetDialog() {
+    this.setState({ openModalCalSet: !this.state.openModalCalSet });
   }
 
   @autobind
@@ -76,18 +90,17 @@ class NavBar extends Component {
   HandleDismissGuest(participantId) {
     this.props.cbHandleDismissGuest(participantId);
   }
-
+  
   renderRightGroup() {
     const {
       toggleVisible,
-      isAuthenticated, events, openModalAbout, userAvatar, curUser, showPastEvents } = this.state;
+      isAuthenticated,
+      events, openModalAbout, userAvatar, curUser, showPastEvents, openModalCalSet } = this.state;
 
     if (isAuthenticated) {
       return (
         <ToolbarGroup lastChild styleName="rightToolbarGroup" >
-          <FlatButton href="https://www.freecodecamp.com/donate/" styleName="donateButton" aria-label="Donate">
-            Donate
-          </FlatButton>
+          {this.constructor.donateButton()}
           <NotificationBar
             curUser={curUser}
             events={events}
@@ -106,16 +119,16 @@ class NavBar extends Component {
             showPastEvents={showPastEvents}
             handleFilterToggle={this.handleFilterToggle}
             toggleAboutDialog={this.toggleAboutDialog}
+            toggleCalSetDialog={this.toggleCalSetDialog}
           />
           <AboutDialog cbOpenModal={this.toggleAboutDialog} openModal={openModalAbout} />
+          <GoogleCalendarManager cbOpenModal={this.toggleCalSetDialog} openModal={openModalCalSet} />
         </ToolbarGroup>
       );
     }
     return (
       <ToolbarGroup lastChild styleName="rightToolbarGroup">
-        <FlatButton href="https://www.freecodecamp.com/donate/" styleName="donateButton" aria-label="Donate">
-          Donate
-        </FlatButton>
+        {this.constructor.donateButton()}
         <FlatButton styleName="loginButton" onTouchTap={this.handleAuthClick} labelStyle={{ fontWeight: 200, fontSize: '20px' }} >
           Sign In
         </FlatButton>

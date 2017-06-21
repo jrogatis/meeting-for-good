@@ -18,6 +18,7 @@ const inLineStyles = {
   iconMenu: {
     iconStyle: { minWidth: 70, display: 'flex', flexDirection: 'row', alignItems: 'center' },
     toggle: { label: { fontSize: '18px' }, thumbSwitched: { backgroundColor: 'red' } },
+    menuItem: { maxHeight: '30px', minHeight: '30px', lineHeight: '30px', width: '168px' },
   },
 };
 
@@ -33,14 +34,14 @@ const IconBtn = (props) => {
   );
 };
 
-const AboutMenuItem = (props) => {
-  const { toggleAboutDialog } = props;
+const GoogleCalSetItem = (props) => {
+  const { toggleCalSetDialog } = props;
   return (
     <MenuItem
-      onClick={toggleAboutDialog}
+      onClick={toggleCalSetDialog}
       styleName="AboutButton"
-      primaryText="About"
-      style={{ maxHeight: '30px', minHeight: '30px', lineHeight: '30px', width: '168px' }}
+      primaryText="Google Calendar Set"
+      style={inLineStyles.iconMenu.menuItem}
     />
   );
 };
@@ -61,6 +62,18 @@ const PastEventsMenuItem = (props) => {
   );
 };
 
+const AboutMenuItem = (props) => {
+  const { toggleAboutDialog } = props;
+  return (
+    <MenuItem
+      onClick={toggleAboutDialog}
+      styleName="AboutButton"
+      primaryText="About"
+      style={inLineStyles.iconMenu.menuItem}
+    />
+  );
+};
+
 const LogoutMenuItem = () => (
   <MenuItem
     href={'/api/auth/logout'}
@@ -71,9 +84,10 @@ const LogoutMenuItem = () => (
 );
 
 const MenuItems = props => (
-  <span stype={{ width: '168px' }}>
+  <span>
     {PastEventsMenuItem(props)}
     <Divider styleName="Divider" />
+    {GoogleCalSetItem(props)}
     {AboutMenuItem(props)}
     {LogoutMenuItem()}
   </span>
@@ -96,6 +110,14 @@ IconBtn.defaultProps = {
   curUser: () => { console.log('curUser prop validation not set!'); },
 };
 
+
+GoogleCalSetItem.propTypes = {
+  toggleCalSetDialog: PropTypes.func.isRequired,
+};
+
+AboutMenuItem.propTypes = {
+  toggleAboutDialog: PropTypes.func.isRequired,
+};
 
 IconBtn.propTypes = {
   curUser: isCurUser,
