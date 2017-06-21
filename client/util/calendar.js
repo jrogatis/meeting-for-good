@@ -1,23 +1,21 @@
 import fetch from 'isomorphic-fetch';
 import nprogress from 'nprogress';
-import jsonpatch from 'fast-json-patch';
 
 import { checkStatus, parseJSON } from './fetch.util';
 
 export const listCalendars = async () => {
+  const urlToFetch = '/api/ggcalendar/list';
   nprogress.configure({ showSpinner: false });
   nprogress.start();
-  const response = await fetch('/api/ggcalendar/list', {
-    credentials: 'same-origin',
-  });
+  const response = await fetch(urlToFetch, { credentials: 'same-origin' });
   try {
     checkStatus(response);
-    const event = await parseJSON(response);
-    return event;
+    const calendars = await parseJSON(response);
+    return calendars;
   } catch (err) {
-    console.error('err at listCalendars calendar.js', err);
-    return null;
+    console.error('loadEvents, at events.js', err);
+    return err;
   } finally {
     nprogress.done();
   }
-}
+};

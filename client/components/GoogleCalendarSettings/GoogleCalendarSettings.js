@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
+import { listCalendars } from '../../util/calendar';
 import { isCurUser } from '../../util/commonPropTypes';
 
 const inlineStyles = {
@@ -25,16 +26,28 @@ class GoogleCalendarSettings extends Component {
     ];
   }
 
+  static async calendarsLoad() {
+    try {
+      const listCal = await listCalendars();
+      return listCal;
+    } catch (err) {
+      console.log('err at CalendarsLoad', err);
+      return null;
+    }
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       openModalCalSet: false,
+      listCal: [],
     };
   }
 
-  componentWillMount() {
+  async componentWillMount() {
     const { openModalCalSet } = this.props;
-    this.setState({ openModalCalSet });
+    const listCal = await this.constructor.calendarsLoad();
+    this.setState({ openModalCalSet, listCal });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -48,14 +61,23 @@ class GoogleCalendarSettings extends Component {
   }
 
   renderTableRows() {
-    return (
-      <TableRow selected>
-        <TableRowColumn>1</TableRowColumn>
-      </TableRow>
-    );
+    const { listCal } = this.state;
+    if (listCal.length === 0) { return null; }
+    const rows = [];
+    listCal.items.forEach((calendar) => {
+      rows.push(
+        <TableRow key={calendar.etag}>
+          <TableRowColumn>{calendar.summary}</TableRowColumn>
+        </TableRow>,
+      );
+    });
+    console.log(rows);
+    const result = (<TableBody> {rows} </TableBody>);
+    return result;
   }
 
   renderTable() {
+    const inlineStyles = { TableHeaderColumn: { fontSize: '18px' } };
     return (
       <Table
         fixedHeader
@@ -68,12 +90,10 @@ class GoogleCalendarSettings extends Component {
           enableSelectAll
         >
           <TableRow>
-            <TableHeaderColumn>Calendar</TableHeaderColumn>
+            <TableHeaderColumn style={inlineStyles.TableHeaderColumn}>Calendars</TableHeaderColumn>
           </TableRow>
         </TableHeader>
-        <TableBody>
-          {this.renderTableRows()}
-        </TableBody>
+        {this.renderTableRows()}
       </Table>
     );
   }

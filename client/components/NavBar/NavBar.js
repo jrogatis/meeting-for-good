@@ -77,7 +77,6 @@ class NavBar extends Component {
 
   @autobind
   toggleCalSetDialog() {
-    console.log(this.state.openModalCalSet);
     this.setState({ openModalCalSet: !this.state.openModalCalSet });
   }
 
