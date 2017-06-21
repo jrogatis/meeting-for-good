@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import NotificationBar from '../NotificationBar/NotificationBar';
 import avatarPlaceHolder from '../../assets/Profile_avatar_placeholder_large.png';
 
+import GoogleCalendarManager from '../GoogleCalendarManager/GoogleCalendarManager';
 import AboutDialog from '../AboutDialog/AboutDialog';
 import AvatarMenu from '../NavBar/NavBarAvatarMenu';
 import styles from './nav-bar.css';
@@ -61,9 +62,8 @@ class NavBar extends Component {
   }
 
   @autobind
-
   toggleAboutDialog() {
-    this.setState({ openModal: !this.state.openModal });
+    this.setState({ openModal: !this.state.openModalAbout });
   }
 
   @autobind
@@ -80,7 +80,7 @@ class NavBar extends Component {
   renderRightGroup() {
     const {
       toggleVisible,
-      isAuthenticated, events, openModal, userAvatar, curUser, showPastEvents } = this.state;
+      isAuthenticated, events, openModalAbout, userAvatar, curUser, showPastEvents } = this.state;
 
     if (isAuthenticated) {
       return (
@@ -107,7 +107,7 @@ class NavBar extends Component {
             handleFilterToggle={this.handleFilterToggle}
             toggleAboutDialog={this.toggleAboutDialog}
           />
-          <AboutDialog cbOpenModal={this.toggleAboutDialog} openModal={openModal} />
+          <AboutDialog cbOpenModal={this.toggleAboutDialog} openModal={openModalAbout} />
         </ToolbarGroup>
       );
     }

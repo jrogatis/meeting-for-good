@@ -10,7 +10,6 @@ import Divider from 'material-ui/Divider';
 import Toggle from 'material-ui/Toggle';
 import PropTypes from 'prop-types';
 import { isCurUser } from '../../util/commonPropTypes';
-import GoogleCalendarManager from '../GoogleCalendarManager/GoogleCalendarManager';
 
 import nameInitials from '../../util/string.utils';
 import styles from './nav-bar.css';
@@ -41,7 +40,7 @@ const AboutMenuItem = (props) => {
       onClick={toggleAboutDialog}
       styleName="AboutButton"
       primaryText="About"
-      style={{ maxHeight: '30px', minHeight: '20px', lineHeight: '25px' }}
+      style={{ maxHeight: '30px', minHeight: '30px', lineHeight: '30px', width: '168px' }}
     />
   );
 };
@@ -49,7 +48,7 @@ const AboutMenuItem = (props) => {
 const PastEventsMenuItem = (props) => {
   const { showPastEvents, handleFilterToggle } = props;
   return (
-    <MenuItem style={{ maxHeight: '30px', minHeight: '20px' }} >
+    <MenuItem style={{ maxHeight: '30px', minHeight: '30px', width: '168px' }} >
       <Toggle
         label={'Past Events'}
         toggled={showPastEvents}
@@ -67,12 +66,12 @@ const LogoutMenuItem = () => (
     href={'/api/auth/logout'}
     styleName="LogoutButton"
     primaryText="Logout"
-    style={{ maxHeight: '30px', minHeight: '20px', lineHeight: '25px' }}
+    style={{ maxHeight: '30px', minHeight: '30px', lineHeight: '30px', width: '168px' }}
   />
 );
 
 const MenuItems = props => (
-  <span>
+  <span stype={{ width: '168px' }}>
     {PastEventsMenuItem(props)}
     <Divider styleName="Divider" />
     {AboutMenuItem(props)}
