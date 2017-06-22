@@ -5,11 +5,9 @@ const isAuth = (req, res, next) => {
   return res.status(403).send('Authentiation required.');
 };
 
-const respondWithResult = (res, statusCode = 200) => {
-  return (entity) => {
-    if (entity) return res.status(statusCode).json(entity);
-    return null;
-  };
+const respondWithResult = (res, statusCode = 200) => (entity) => {
+  if (entity) return res.status(statusCode).json(entity);
+  return null;
 };
 
 const removeEntity = res => (entity) => {
@@ -50,5 +48,6 @@ const upsertModel = (req, res, model) => {
 };
 
 export {
-  isAuth, respondWithResult, removeEntity, patchUpdates, handleError, handleEntityNotFound, upsertModel,
+  isAuth, respondWithResult, removeEntity, patchUpdates,
+  handleError, handleEntityNotFound, upsertModel,
 };

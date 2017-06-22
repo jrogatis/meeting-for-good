@@ -6,7 +6,7 @@
 import nodemailer from 'nodemailer';
 import path from 'path';
 import sesTransport from 'nodemailer-ses-transport';
-import { respondWithResult, handleError  } from '../utils/api.utils';
+import { respondWithResult, handleError } from '../utils/api.utils';
 
 const EmailTemplate = require('email-templates').EmailTemplate;
 
