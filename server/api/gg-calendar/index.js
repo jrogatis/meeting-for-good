@@ -2,10 +2,10 @@
 
 import express from 'express';
 import { listCalendars } from './gg-calendar.controller';
-import isAuthenticated from '../utils/api.utils';
+import { isAuth } from '../utils/api.utils';
 
 const router = express.Router();
 
-router.get('/list', isAuthenticated, listCalendars);
+router.get('/list', isAuth, listCalendars);
 
 module.exports = router;

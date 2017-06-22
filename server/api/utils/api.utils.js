@@ -1,6 +1,6 @@
 import jsonpatch from 'fast-json-patch';
 
-const isAuthenticated = (req, res, next) => {
+const isAuth = (req, res, next) => {
   if (req.isAuthenticated()) return next();
   return res.status(403).send('Authentiation required.');
 };
@@ -34,4 +34,22 @@ const patchUpdates = patches => (entity) => {
   return entity.save();
 };
 
-export { isAuthenticated, respondWithResult, removeEntity, patchUpdates };
+
+const handleError = (res, statusCode) => {
+  statusCode = statusCode || 500;
+  return (err) => {
+    res.status(statusCode).send(err);
+  };
+};
+
+
+const handleEntityNotFound = res => (entity) => {
+  if (!entity) {
+    res.status(404).end();
+    return null;
+  }
+  return entity;
+};
+
+
+export { isAuth, respondWithResult, removeEntity, patchUpdates, handleError, handleEntityNotFound };

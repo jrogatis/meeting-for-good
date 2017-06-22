@@ -13,22 +13,8 @@
 
 import Users from './user.model';
 import Events from '../events/events.model';
-import { respondWithResult, patchUpdates, removeEntity } from '../utils/api.utils';
+import { respondWithResult, patchUpdates, removeEntity, handleError, handleEntityNotFound } from '../utils/api.utils';
 
-const handleError = (res, statusCode) => {
-  statusCode = statusCode || 500;
-  return (err) => {
-    res.status(statusCode).send(err);
-  };
-};
-
-const handleEntityNotFound = res => (entity) => {
-  if (!entity) {
-    res.status(404).end();
-    return null;
-  }
-  return entity;
-};
 
 // Gets a list of all  users
 export const index = (req, res) => Users.find().exec()
