@@ -5,23 +5,15 @@ const isAuth = (req, res, next) => {
   return res.status(403).send('Authentiation required.');
 };
 
-const respondWithResult = (res, statusCode) => {
-  statusCode = statusCode || 200;
+const respondWithResult = (res, statusCode = 200) => {
   return (entity) => {
-    if (entity) {
-      return res.status(statusCode).json(entity);
-    }
+    if (entity) return res.status(statusCode).json(entity);
     return null;
   };
 };
 
 const removeEntity = res => (entity) => {
-  if (entity) {
-    return entity.remove()
-      .then(() => {
-        res.status(204).end();
-      });
-  }
+  if (entity) entity.remove().then(() => res.status(204).end());
 };
 
 const patchUpdates = patches => (entity) => {
@@ -35,13 +27,7 @@ const patchUpdates = patches => (entity) => {
 };
 
 
-const handleError = (res, statusCode) => {
-  statusCode = statusCode || 500;
-  return (err) => {
-    res.status(statusCode).send(err);
-  };
-};
-
+const handleError = (res, statusCode = 500) => err => res.status(statusCode).send(err);
 
 const handleEntityNotFound = res => (entity) => {
   if (!entity) {
