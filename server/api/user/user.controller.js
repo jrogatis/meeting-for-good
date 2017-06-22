@@ -13,7 +13,7 @@
 
 import Users from './user.model';
 import Events from '../events/events.model';
-import { respondWithResult, patchUpdates, removeEntity, handleError, handleEntityNotFound } from '../utils/api.utils';
+import { respondWithResult, patchUpdates, removeEntity, handleError, handleEntityNotFound, upsertModel } from '../utils/api.utils';
 
 
 // Gets a list of all  users
@@ -36,19 +36,7 @@ export const show = (req, res) => Users.findById(req.params.id).exec()
   .catch(handleError(res));
 
 // Upserts the given user in the DB at the specified ID
-export const upsert = (req, res) => {
-  if (req.body._id) {
-    delete req.body._id;
-  }
-  return Users.findOneAndUpdate({ _id: req.params.id },
-    req.body,
-    { upsert: true, setDefaultsOnInsert: true, runValidators: true }).exec()
-    .then(respondWithResult(res))
-    .catch((err) => {
-      console.log('err no put', err);
-      handleError(res);
-    });
-};
+export const upsert = (req, res) => upsertModel(req, res, Users);
 
 // Deletes a User from the DB
 export const destroy = (req, res) => Users.findById(req.params.id).exec()

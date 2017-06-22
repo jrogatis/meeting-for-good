@@ -16,7 +16,7 @@
 'use strict';
 
 import Events from './events.model';
-import { respondWithResult, patchUpdates, removeEntity, handleEntityNotFound, handleError } from '../utils/api.utils';
+import { respondWithResult, patchUpdates, removeEntity, handleEntityNotFound, handleError, upsertModel } from '../utils/api.utils';
 
 const filterOutStatusZeroParticipants = () => (event) => {
   if (!event) {
@@ -115,19 +115,7 @@ const destroy = (req, res) =>
     .catch(handleError(res));
 
 // Upserts the given Event in the DB at the specified ID
-const upsert = (req, res) => {
-  if (req.body._id) {
-    delete req.body._id;
-  }
-  return Events.findOneAndUpdate({ _id: req.params.id },
-    req.body,
-    { upsert: true, setDefaultsOnInsert: true, runValidators: true }).exec()
-    .then(respondWithResult(res))
-    .catch((err) => {
-      console.log('err no put', err);
-      handleError(res);
-    });
-};
+const upsert = (req, res) => upsertModel(req, res, Events);
 
 // Creates a new Event in the DB
 const create = (req, res) => {

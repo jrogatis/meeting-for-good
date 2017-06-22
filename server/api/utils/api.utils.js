@@ -26,7 +26,6 @@ const patchUpdates = patches => (entity) => {
   return entity.save();
 };
 
-
 const handleError = (res, statusCode = 500) => err => res.status(statusCode).send(err);
 
 const handleEntityNotFound = res => (entity) => {
@@ -37,5 +36,19 @@ const handleEntityNotFound = res => (entity) => {
   return entity;
 };
 
+// Upserts the given Event in the DB at the specified ID
+const upsertModel = (req, res, model) => {
+  if (req.body._id) delete req.body._id;
+  return model.findOneAndUpdate({ _id: req.params.id },
+    req.body,
+    { upsert: true, setDefaultsOnInsert: true, runValidators: true }).exec()
+    .then(respondWithResult(res))
+    .catch((err) => {
+      console.log('err no put', err);
+      handleError(res);
+    });
+};
 
-export { isAuth, respondWithResult, removeEntity, patchUpdates, handleError, handleEntityNotFound };
+export {
+  isAuth, respondWithResult, removeEntity, patchUpdates, handleError, handleEntityNotFound, upsertModel,
+};
