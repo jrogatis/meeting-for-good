@@ -46,7 +46,6 @@ const patch = (req, res) => {
   if (req.body._id) {
     delete req.body._id;
   }
-
   return Users.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(patchUpdates(req.body))
