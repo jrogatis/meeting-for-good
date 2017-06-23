@@ -16,7 +16,7 @@
 'use strict';
 
 import Events from './events.model';
-import { respondWithResult, patchUpdates, removeEntity, handleEntityNotFound, handleError, upsertModel } from '../utils/api.utils';
+import { respondWithResult, patchUpdates, handleEntityNotFound, handleError, upsertModel, destroyModel } from '../utils/api.utils';
 
 const filterOutStatusZeroParticipants = () => (event) => {
   if (!event) {
@@ -108,11 +108,7 @@ const patch = (req, res) => {
 };
 
 // Deletes a Event from the DB
-const destroy = (req, res) =>
-  Events.findById(req.params.id).exec()
-    .then(handleEntityNotFound(res))
-    .then(removeEntity(res))
-    .catch(handleError(res));
+const destroy = (req, res) => destroyModel(req, res, Events);
 
 // Upserts the given Event in the DB at the specified ID
 const upsert = (req, res) => upsertModel(req, res, Events);

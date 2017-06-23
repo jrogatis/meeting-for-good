@@ -47,7 +47,14 @@ const upsertModel = (req, res, model) => {
     });
 };
 
+
+// Deletes a User from the DB
+const destroyModel = (req, res, model) => model.findById(req.params.id).exec()
+  .then(handleEntityNotFound(res))
+  .then(removeEntity(res))
+  .catch(handleError(res));
+
 export {
   isAuth, respondWithResult, removeEntity, patchUpdates,
-  handleError, handleEntityNotFound, upsertModel,
+  handleError, handleEntityNotFound, upsertModel, destroyModel,
 };
