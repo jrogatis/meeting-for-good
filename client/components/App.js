@@ -17,6 +17,7 @@ import {
 import { sendEmailInvite } from '../util/emails';
 import { handleLoadEvent, handleEmailOwner, eventsMaxMinDates } from './AppHandlers';
 import editCurUser from '../util/curUser';
+import { listCalendarEvents } from '../util/calendar';
 
 import '../styles/main.css';
 
@@ -47,6 +48,7 @@ class App extends Component {
       events: [],
       eventsMaxDate: moment('2999-01-01').startOf('year'), // max date for all envents to set the range for gg calendar
       eventsMinDate: moment('1970-01-01').endOf('year'), // min date for all envents to set the range for gg calendar
+      ggCalendarEvents: [],
     };
     this._notificationSystem = null;
   }
@@ -61,6 +63,9 @@ class App extends Component {
         const curUser = await getCurrentUser();
         const events = await loadEvents(showPastEvents);
         const maxMinDates = eventsMaxMinDates(events);
+        const ggCalendarEvents =
+          await listCalendarEvents(maxMinDates, curUser);
+        console.log('ggCalendarEvents', ggCalendarEvents);
         this.setState({
           isAuthenticated: true,
           openLoginModal: false,
@@ -69,6 +74,7 @@ class App extends Component {
           showPastEvents,
           eventsMaxDate: maxMinDates.maxDate,
           eventsMinDate: maxMinDates.minDate,
+          ggCalendarEvents,
         });
       } catch (err) {
         console.log('error at componentWillMount app.js ', err);
