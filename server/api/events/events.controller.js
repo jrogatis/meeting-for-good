@@ -27,7 +27,8 @@ const filterOutStatusZeroParticipants = () => (event) => {
 };
 
 // Make a false delete setting the active to false
-const setFalse =  (req, res) => {
+
+const setFalse = (req, res) => {
   Events.findById(req.params.id, (err, event) => {
     if (err) return res.status(500).send(err);
     if (!event || !event.active) return res.status(404).send('Not found.');
@@ -100,8 +101,8 @@ const patch = (req, res) => {
     .then(handleEntityNotFound(res))
     .then(patchUpdates(req.body))
     .then(res => Events.findById(res._id)
-        .populate('participants.userId', 'avatar emails name')
-        .exec())
+      .populate('participants.userId', 'avatar emails name')
+      .exec())
     .then(filterOutStatusZeroParticipants())
     .then(respondWithResult(res))
     .catch(handleError(res));
