@@ -38,7 +38,7 @@ const GoogleCalSetMenuItem = (props) => {
   const { toggleCalSetDialog } = props;
   return (
     <MenuItem
-      onClick={toggleCalSetDialog}
+      onTouchTap={toggleCalSetDialog}
       styleName="AboutButton"
       primaryText="Google Calendar Set"
       style={inLineStyles.iconMenu.menuItem}
@@ -66,7 +66,7 @@ const AboutMenuItem = (props) => {
   const { toggleAboutDialog } = props;
   return (
     <MenuItem
-      onClick={toggleAboutDialog}
+      onTouchTap={toggleAboutDialog}
       styleName="AboutButton"
       primaryText="About"
       style={inLineStyles.iconMenu.menuItem}
@@ -109,7 +109,6 @@ const AvatarMenu = props => (
 IconBtn.defaultProps = {
   curUser: () => { console.log('curUser prop validation not set!'); },
 };
-
 
 GoogleCalSetMenuItem.propTypes = {
   toggleCalSetDialog: PropTypes.func.isRequired,

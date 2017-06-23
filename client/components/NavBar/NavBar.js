@@ -124,6 +124,7 @@ class NavBar extends Component {
           <GoogleCalendarSettings
             cbToggleCalSetDialog={this.toggleCalSetDialog}
             openModalCalSet={openModalCalSet}
+            curUser={curUser}
           />
         </ToolbarGroup>
       );
