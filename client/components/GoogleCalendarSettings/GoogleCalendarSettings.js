@@ -49,10 +49,17 @@ class GoogleCalendarSettings extends Component {
   }
 
   async componentWillMount() {
-    const { openModalCalSet } = this.props;
-    console.log(this.props.curUser);
-    const listCal = await this.constructor.calendarsLoad();
-    this.setState({ openModalCalSet, listCal: listCal.items });
+    const { openModalCalSet, curUser } = this.props;
+    try {
+      const listCal = await this.constructor.calendarsLoad();
+      this.setState({
+        openModalCalSet,
+        listCal: listCal.items,
+        selectedCal: curUser.selectedCalendarsIds,
+      });
+    } catch (err) {
+      console.log('err at componentWillMount GoogleCalendarSetings', err);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -78,18 +85,19 @@ class GoogleCalendarSettings extends Component {
   }
 
   @autobind
-  handleSaveSetings() {
+  async handleSaveSetings() {
     const { selectedCal } = this.state;
-    console.log(selectedCal);
-    const { curUser } = this.props;
+    const { curUser, cbEditCurUser, cbToggleCalSetDialog } = this.props;
     const nCurUser = _.cloneDeep(curUser);
     const observeCurUser = jsonpatch.observe(nCurUser);
-    nCurUser.selectedCalendarsIds = [];
-    const patchForDelete = jsonpatch.generate(observeCurUser);
     nCurUser.selectedCalendarsIds = selectedCal;
     const patchesForAdd = jsonpatch.generate(observeCurUser);
-    const patches = _.concat(patchForDelete, patchesForAdd);
-    console.log(patches);
+    try {
+      await cbEditCurUser(patchesForAdd);
+      cbToggleCalSetDialog();
+    } catch (err) {
+      console.log('handleSaveSetings', err);
+    }
   }
 
   renderTableRows() {
@@ -148,6 +156,7 @@ GoogleCalendarSettings.defaultProps = {
 GoogleCalendarSettings.propTypes = {
   curUser: isCurUser,
   cbToggleCalSetDialog: PropTypes.func.isRequired,
+  cbEditCurUser: PropTypes.func.isRequired,
   openModalCalSet: PropTypes.bool.isRequired,
 };
 

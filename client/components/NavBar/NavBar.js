@@ -125,6 +125,7 @@ class NavBar extends Component {
             cbToggleCalSetDialog={this.toggleCalSetDialog}
             openModalCalSet={openModalCalSet}
             curUser={curUser}
+            cbEditCurUser={this.props.cbEditCurUser}
           />
         </ToolbarGroup>
       );
@@ -181,6 +182,7 @@ NavBar.propTypes = {
   cbOpenLoginModal: PropTypes.func.isRequired,
   showPastEvents: PropTypes.bool,
   cbHandleDismissGuest: PropTypes.func.isRequired,
+  cbEditCurUser: PropTypes.func.isRequired,
 
   // List of events containing list of event participants
   events: PropTypes.arrayOf(
