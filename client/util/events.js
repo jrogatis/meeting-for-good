@@ -4,7 +4,7 @@ import jsonpatch from 'fast-json-patch';
 
 import { checkStatus, parseJSON } from './fetch.util';
 
-export async function loadEvents(showPastEvents) {
+export const loadEvents = async (showPastEvents) => {
   let urlToFetch = '/api/events/getByUser';
   nprogress.configure({ showSpinner: false });
   nprogress.start();
@@ -24,12 +24,14 @@ export async function loadEvents(showPastEvents) {
   } finally {
     nprogress.done();
   }
-}
+};
 
-export const loadEvent = async (id) => {
+
+export const loadEvent = async (id, full = false) => {
   nprogress.configure({ showSpinner: false });
+  const urlToFecth = (full) ? `/api/events/getFull/${id}` : `/api/events/${id}`;
   nprogress.start();
-  const response = await fetch(`/api/events/${id}`, {
+  const response = await fetch(urlToFecth, {
     credentials: 'same-origin',
   });
   try {
@@ -180,24 +182,6 @@ export const AddEventParticipant = async (guestId, event) => {
   const patch = jsonpatch.generate(observe);
   const response = await editEvent(patch, event._id);
   return response;
-};
-
-export const loadEventFull = async (id) => {
-  nprogress.configure({ showSpinner: false });
-  nprogress.start();
-  const response = await fetch(`/api/events/getFull/${id}`, {
-    credentials: 'same-origin',
-  });
-  try {
-    checkStatus(response);
-    const event = await parseJSON(response);
-    return event;
-  } catch (err) {
-    console.error('err at loadEventFull', err);
-    return null;
-  } finally {
-    nprogress.done();
-  }
 };
 
 export const handleDismiss = async (participantId) => {
