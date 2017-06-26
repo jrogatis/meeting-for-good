@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router';
 import NotificationSystem from 'react-notification-system';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import moment from 'moment';
 
 import LoginModal from '../components/Login/Login';
 import NavBar from '../components/NavBar/NavBar';
@@ -14,8 +15,11 @@ import {
   handleDismiss, loadEvent,
 } from '../util/events';
 import { sendEmailInvite } from '../util/emails';
+import { handleLoadEvent, handleEmailOwner, eventsMaxMinDates } from './AppHandlers';
+import editCurUser from '../util/curUser';
+import { listCalendarEvents } from '../util/calendar';
+
 import '../styles/main.css';
-import { handleLoadEvent, handleEmailOwner } from './AppHandlers';
 
 const styleNotif = {
   NotificationItem: { // Override the notification item
@@ -42,6 +46,9 @@ class App extends Component {
       pathToGo: '/',
       loginModalDisable: false,
       events: [],
+      eventsMaxDate: moment('2999-01-01').startOf('year'), // max date for all envents to set the range for gg calendar
+      eventsMinDate: moment('1970-01-01').endOf('year'), // min date for all envents to set the range for gg calendar
+      ggCalendarEvents: [],
     };
     this._notificationSystem = null;
   }
@@ -52,10 +59,26 @@ class App extends Component {
       if (sessionStorage.getItem('showPastEvents')) {
         showPastEvents = sessionStorage.getItem('showPastEvents') === 'true';
       }
-      const curUser = await getCurrentUser();
-      const events = await loadEvents(showPastEvents);
-      this.setState({
-        isAuthenticated: true, openLoginModal: false, curUser, events, showPastEvents });
+      try {
+        const curUser = await getCurrentUser();
+        const events = await loadEvents(showPastEvents);
+        const maxMinDates = eventsMaxMinDates(events);
+        const ggCalendarEvents =
+          await listCalendarEvents(maxMinDates, curUser);
+        console.log('ggCalendarEvents', ggCalendarEvents);
+        this.setState({
+          isAuthenticated: true,
+          openLoginModal: false,
+          curUser,
+          events,
+          showPastEvents,
+          eventsMaxDate: maxMinDates.maxDate,
+          eventsMinDate: maxMinDates.minDate,
+          ggCalendarEvents,
+        });
+      } catch (err) {
+        console.log('error at componentWillMount app.js ', err);
+      }
     }
   }
 
@@ -71,8 +94,17 @@ class App extends Component {
 
   @autobind
   async toggleFilterPastEventsTo(value) {
-    const events = await loadEvents(value);
-    this.setState({ showPastEvents: value, events });
+    try {
+      const events = await loadEvents(value);
+      const maxMinDates = eventsMaxMinDates(events);
+      this.setState({
+        showPastEvents: value,
+        events,
+        eventsMaxDate: maxMinDates.maxDate,
+        eventsMinDate: maxMinDates.minDate });
+    } catch (err) {
+      console.log('err at toggleFilterPastEventsTo', err);
+    }
   }
 
   @autobind
@@ -272,6 +304,18 @@ class App extends Component {
     return nEvents;
   }
 
+  @autobind
+  async handleEditCurUser(patches) {
+    const { curUser } = this.state;
+    try {
+      const nCurUser = await editCurUser(patches, curUser._id);
+      this.setState({ curUser: nCurUser });
+    } catch (err) {
+      console.log('error at app handleEditCurUser', err);
+      return err;
+    }
+  }
+
   injectPropsChildren(child) {
     const { showPastEvents, curUser, isAuthenticated, events } = this.state;
     if (child.type.displayName === 'Dashboard') {
@@ -342,6 +386,7 @@ class App extends Component {
           cbHandleDismissGuest={this.handleGuestNotificationsDismiss}
           events={events}
           showPastEvents={showPastEvents}
+          cbEditCurUser={this.handleEditCurUser}
         />
         <main className="main"> {childrenWithProps} </main>
       </div>

@@ -8,6 +8,7 @@ const UserSchema = new Schema({
   emails: Array,
   name: { type: String, required: true },
   avatar: { type: String, required: false },
+  selectedCalendarsIds: { type: [String], required: false, unique: true },
 });
 
 export default mongoose.model('User', UserSchema);

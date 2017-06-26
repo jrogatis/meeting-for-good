@@ -1,4 +1,5 @@
 import passport from 'passport';
+import refresh from 'passport-oauth2-refresh';
 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -30,4 +31,5 @@ const strategy = (User, config) => new GoogleStrategy({
 
 export const setup = (User, config) => {
   passport.use(strategy(User, config));
+  refresh.use(strategy(User, config));
 };

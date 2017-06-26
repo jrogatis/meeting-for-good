@@ -8,6 +8,8 @@ import PropTypes from 'prop-types';
 
 import NotificationBar from '../NotificationBar/NotificationBar';
 import avatarPlaceHolder from '../../assets/Profile_avatar_placeholder_large.png';
+
+import GoogleCalendarSettings from '../GoogleCalendarSettings/GoogleCalendarSettings';
 import AboutDialog from '../AboutDialog/AboutDialog';
 import AvatarMenu from '../NavBar/NavBarAvatarMenu';
 import styles from './nav-bar.css';
@@ -17,6 +19,14 @@ class NavBar extends Component {
   @autobind
   static handleDashboardClick() {
     browserHistory.push('/dashboard');
+  }
+
+  static donateButton() {
+    return (
+      <FlatButton href="https://www.freecodecamp.com/donate/" styleName="donateButton" aria-label="Donate">
+        Donate
+      </FlatButton>)
+      ;
   }
 
   constructor(props) {
@@ -30,7 +40,8 @@ class NavBar extends Component {
       toggleVisible: true,
       showPastEvents,
       events,
-      openModal: false,
+      openModalAbout: false,
+      openModalCalSet: false,
     };
   }
 
@@ -61,7 +72,12 @@ class NavBar extends Component {
 
   @autobind
   toggleAboutDialog() {
-    this.setState({ openModal: !this.state.openModal });
+    this.setState({ openModalAbout: !this.state.openModalAbout });
+  }
+
+  @autobind
+  toggleCalSetDialog() {
+    this.setState({ openModalCalSet: !this.state.openModalCalSet });
   }
 
   @autobind
@@ -78,14 +94,13 @@ class NavBar extends Component {
   renderRightGroup() {
     const {
       toggleVisible,
-      isAuthenticated, events, openModal, userAvatar, curUser, showPastEvents } = this.state;
+      isAuthenticated,
+      events, openModalAbout, userAvatar, curUser, showPastEvents, openModalCalSet } = this.state;
 
     if (isAuthenticated) {
       return (
         <ToolbarGroup lastChild styleName="rightToolbarGroup" >
-          <FlatButton href="https://www.freecodecamp.com/donate/" styleName="donateButton" aria-label="Donate">
-            Donate
-          </FlatButton>
+          {this.constructor.donateButton()}
           <NotificationBar
             curUser={curUser}
             events={events}
@@ -103,16 +118,21 @@ class NavBar extends Component {
             showPastEvents={showPastEvents}
             handleFilterToggle={this.handleFilterToggle}
             toggleAboutDialog={this.toggleAboutDialog}
+            toggleCalSetDialog={this.toggleCalSetDialog}
           />
-          <AboutDialog cbOpenModal={this.toggleAboutDialog} openModal={openModal} />
+          <AboutDialog cbOpenModal={this.toggleAboutDialog} openModal={openModalAbout} />
+          <GoogleCalendarSettings
+            cbToggleCalSetDialog={this.toggleCalSetDialog}
+            openModalCalSet={openModalCalSet}
+            curUser={curUser}
+            cbEditCurUser={this.props.cbEditCurUser}
+          />
         </ToolbarGroup>
       );
     }
     return (
       <ToolbarGroup lastChild styleName="rightToolbarGroup">
-        <FlatButton href="https://www.freecodecamp.com/donate/" styleName="donateButton" aria-label="Donate">
-          Donate
-        </FlatButton>
+        {this.constructor.donateButton()}
         <FlatButton styleName="loginButton" onTouchTap={this.handleAuthClick} labelStyle={{ fontWeight: 200, fontSize: '20px' }} >
           Sign In
         </FlatButton>
@@ -162,6 +182,7 @@ NavBar.propTypes = {
   cbOpenLoginModal: PropTypes.func.isRequired,
   showPastEvents: PropTypes.bool,
   cbHandleDismissGuest: PropTypes.func.isRequired,
+  cbEditCurUser: PropTypes.func.isRequired,
 
   // List of events containing list of event participants
   events: PropTypes.arrayOf(

@@ -27,6 +27,7 @@ const filterOutStatusZeroParticipants = () => (event) => {
 };
 
 // Make a false delete setting the active to false
+
 const setFalse = (req, res) => {
   Events.findById(req.params.id, (err, event) => {
     if (err) return res.status(500).send(err);

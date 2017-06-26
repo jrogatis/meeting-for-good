@@ -26,6 +26,7 @@ export const loadEvents = async (showPastEvents) => {
   }
 };
 
+
 export const loadEvent = async (id, full = false) => {
   nprogress.configure({ showSpinner: false });
   const urlToFecth = (full) ? `/api/events/getFull/${id}` : `/api/events/${id}`;
