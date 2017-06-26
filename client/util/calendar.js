@@ -1,6 +1,5 @@
 import fetch from 'isomorphic-fetch';
 import nprogress from 'nprogress';
-
 import { checkStatus, parseJSON } from './fetch.util';
 
 nprogress.configure({ showSpinner: false });
@@ -44,7 +43,7 @@ const listCalendarEvents = async (maxMinDates, curUser) => {
     await Promise.all(calendarIds.map(
       async (calendarId) => {
         const calendarEvents = await listEventsForCalendar(maxMinDates, calendarId);
-        events.push({ calendarId: calendarEvents });
+        calendarEvents.items.forEach(event => events.push(event));
       }),
     );
     return events;

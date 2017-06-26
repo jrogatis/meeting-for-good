@@ -45,15 +45,15 @@ class AvailabilityGrid extends Component {
     };
   }
 
-  componentWillMount() {
+  async componentWillMount() {
     const { event, dates, showHeatmap, curUser } = this.props;
     const allDates = createDatesRange(dates);
     const allTimes = createTimesRange(dates);
     const grid = createGridComplete(allDates, allTimes, event);
     const backgroundColors = genHeatMapBackgroundColors(event.participants);
     const jumpTimeIdx = jumpTimeIndex(allTimes);
-    const calendarEvents = listCalendarEvents(eventsMaxMinDatesForEvent(event), curUser);
-
+    const calendarEvents = await listCalendarEvents(eventsMaxMinDatesForEvent(event), curUser);
+    console.log(calendarEvents);
     this.setState({
       grid, backgroundColors, allTimes, showHeatmap, allDates, event, jumpTimeIdx, calendarEvents,
     });

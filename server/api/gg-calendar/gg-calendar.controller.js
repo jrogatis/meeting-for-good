@@ -2,7 +2,6 @@
  * Using Rails-like standard naming convention for endpoints.
  * GET     /api/ggCalendar/list                      ->  listCalendars
  */
-import moment from 'moment';
 import gcal from 'google-calendar';
 import refresh from 'passport-oauth2-refresh';
 import User from '../user/user.model';
@@ -45,16 +44,14 @@ const listEvents = async (req, res) => {
   const calendarId = req.params.calendarId;
   const minDate = decodeURI(req.params.minDate);
   const maxDate = decodeURI(req.params.maxDate);
-  console.log('decode', minDate, maxDate);
   const curUser = await getCredencials(req);
   if (!curUser.accessToken) return res.redirect('/auth');
   gcal(curUser.accessToken)
     .events.list(calendarId, { timeMax: maxDate, timeMin: minDate }, (err, data) => {
       if (err) {
-        console.log('listEvents at gg-calendar.controler', err);
+        console.error('listEvents at gg-calendar.controler', err);
         return res.status(500).send(err);
       }
-      console.log(data);
       return res.status(200).json(data);
     });
 };
