@@ -16,6 +16,7 @@ import {
 import { sendEmailInvite } from '../util/emails';
 import '../styles/main.css';
 import { handleLoadEvent, handleEmailOwner } from './AppHandlers';
+import editCurUser from '../util/curUser';
 
 const styleNotif = {
   NotificationItem: { // Override the notification item
@@ -69,6 +70,18 @@ class App extends Component {
       autoDismiss, // autoDismiss time in seconds
       position: 'tr',
     });
+  }
+
+  @autobind
+  async handleEditCurUser(patches) {
+    const { curUser } = this.state;
+    try {
+      const nCurUser = await editCurUser(patches, curUser._id);
+      this.setState({ curUser: nCurUser });
+    } catch (err) {
+      console.log('error at app handleEditCurUser', err);
+      return err;
+    }
   }
 
   @autobind
@@ -344,6 +357,7 @@ class App extends Component {
           cbHandleDismissGuest={this.handleGuestNotificationsDismiss}
           events={events}
           showPastEvents={showPastEvents}
+          cbEditCurUser={this.handleEditCurUser}
         />
         <main className="main"> {childrenWithProps} </main>
       </div>

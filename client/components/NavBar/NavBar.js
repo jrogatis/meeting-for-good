@@ -10,6 +10,7 @@ import NotificationBar from '../NotificationBar/NotificationBar';
 import avatarPlaceHolder from '../../assets/Profile_avatar_placeholder_large.png';
 import AboutDialog from '../AboutDialog/AboutDialog';
 import AvatarMenu from '../NavBar/NavBarAvatarMenu';
+import CalendarIntegrationSettings from '../CalendarIntegrationSettings/CalendarIntegrationSettings';
 import styles from './nav-bar.css';
 
 class NavBar extends Component {
@@ -31,6 +32,7 @@ class NavBar extends Component {
       showPastEvents,
       events,
       openModal: false,
+      openModalCalSet: false,
     };
   }
 
@@ -65,6 +67,11 @@ class NavBar extends Component {
   }
 
   @autobind
+  toggleCalSetDialog() {
+    this.setState({ openModalCalSet: !this.state.openModalCalSet });
+  }
+
+  @autobind
   handleFilterToggle(ev, isInputChecked) {
     sessionStorage.setItem('showPastEvents', isInputChecked);
     this.props.cbFilter(isInputChecked);
@@ -77,7 +84,7 @@ class NavBar extends Component {
 
   renderRightGroup() {
     const {
-      toggleVisible,
+      toggleVisible, openModalCalSet,
       isAuthenticated, events, openModal, userAvatar, curUser, showPastEvents } = this.state;
 
     if (isAuthenticated) {
@@ -105,6 +112,12 @@ class NavBar extends Component {
             toggleAboutDialog={this.toggleAboutDialog}
           />
           <AboutDialog cbOpenModal={this.toggleAboutDialog} openModal={openModal} />
+          <CalendarIntegrationSettings
+            cbToggleCalSetDialog={this.toggleCalSetDialog}
+            openModalCalSet={openModalCalSet}
+            curUser={curUser}
+            cbEditCurUser={this.props.cbEditCurUser}
+          />
         </ToolbarGroup>
       );
     }
@@ -162,6 +175,7 @@ NavBar.propTypes = {
   cbOpenLoginModal: PropTypes.func.isRequired,
   showPastEvents: PropTypes.bool,
   cbHandleDismissGuest: PropTypes.func.isRequired,
+  cbEditCurUser: PropTypes.func.isRequired,
 
   // List of events containing list of event participants
   events: PropTypes.arrayOf(
