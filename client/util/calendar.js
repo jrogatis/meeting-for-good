@@ -3,12 +3,12 @@ import nprogress from 'nprogress';
 
 import { checkStatus, parseJSON } from './fetch.util';
 
+nprogress.configure({ showSpinner: false });
+
 const listCalendars = async () => {
-  const urlToFetch = '/api/ggcalendar/list';
-  nprogress.configure({ showSpinner: false });
   nprogress.start();
   try {
-    const response = await fetch(urlToFetch, { credentials: 'same-origin' });
+    const response = await fetch('/api/ggcalendar/list', { credentials: 'same-origin' });
     checkStatus(response);
     const calendars = await parseJSON(response);
     return calendars;
@@ -37,7 +37,6 @@ const listEventsForCalendar = async (maxMinDates, id) => {
 };
 
 const listCalendarEvents = async (maxMinDates, curUser) => {
-  nprogress.configure({ showSpinner: false });
   nprogress.start();
   const events = [];
   const calendarIds = curUser.selectedCalendarsIds;
