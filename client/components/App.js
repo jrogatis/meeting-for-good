@@ -86,8 +86,12 @@ class App extends Component {
 
   @autobind
   async toggleFilterPastEventsTo(value) {
-    const events = await loadEvents(value);
-    this.setState({ showPastEvents: value, events });
+    try {
+      const events = await loadEvents(value);
+      this.setState({ showPastEvents: value, events });
+    } catch (err) {
+      console.error('toggleFilterPastEventsTo', err);
+    }
   }
 
   @autobind

@@ -21,7 +21,7 @@ const listCalendars = async () => {
 };
 
 const listEventsForCalendar = async (maxMinDates, id) => {
-  const urlToFetch = encodeURI(`/api/ggcalendar/listEvents/${id}/${maxMinDates.minDate.toString()}/${maxMinDates.maxDate.toString()}`);
+  const urlToFetch = encodeURI(`/api/ggcalendar/listEvents/${id}/${maxMinDates.minDate.utc().format()}/${maxMinDates.maxDate.utc().format()}`);
   try {
     const calendarEvents =
       await fetch(encodeURI(urlToFetch), {
@@ -40,18 +40,16 @@ const listCalendarEvents = async (maxMinDates, curUser) => {
   nprogress.start();
   const events = [];
   const calendarIds = curUser.selectedCalendarsIds;
-  console.log(calendarIds);
   try {
     await Promise.all(calendarIds.map(
       async (calendarId) => {
-        console.log('no forEach', calendarId);
         const calendarEvents = await listEventsForCalendar(maxMinDates, calendarId);
         events.push({ calendarId: calendarEvents });
       }),
     );
     return events;
   } catch (err) {
-    console.log('listCalendarEvents calendar.js', err);
+    console.error('listCalendarEvents calendar.js', err);
   } finally {
     nprogress.done();
   }

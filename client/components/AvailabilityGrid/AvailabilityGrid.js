@@ -18,6 +18,8 @@ import SnackBarGrid from '../SnackBarGrid/SnackBarGrid';
 import DialogInstructions from './AvailabilityGridDialogInstructions';
 import { loadEvent } from '../../util/events';
 import { isEvent, isCurUser } from '../../util/commonPropTypes';
+import { listCalendarEvents } from '../../util/calendar';
+import { eventsMaxMinDatesForEvent } from '../../util/dates.utils';
 
 import styles from './availability-grid.css';
 
@@ -39,18 +41,22 @@ class AvailabilityGrid extends Component {
       jumpTimeIdx: null,
       event: {},
       allTimes: [],
+      calendarEvents: [],
     };
   }
 
   componentWillMount() {
-    const { event, dates, showHeatmap } = this.props;
+    const { event, dates, showHeatmap, curUser } = this.props;
     const allDates = createDatesRange(dates);
     const allTimes = createTimesRange(dates);
     const grid = createGridComplete(allDates, allTimes, event);
     const backgroundColors = genHeatMapBackgroundColors(event.participants);
     const jumpTimeIdx = jumpTimeIndex(allTimes);
+    const calendarEvents = listCalendarEvents(eventsMaxMinDatesForEvent(event), curUser);
 
-    this.setState({ grid, backgroundColors, allTimes, showHeatmap, allDates, event, jumpTimeIdx });
+    this.setState({
+      grid, backgroundColors, allTimes, showHeatmap, allDates, event, jumpTimeIdx, calendarEvents,
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -223,10 +229,7 @@ class AvailabilityGrid extends Component {
           noGuests={snackBarNoGuests}
           openSnackBar={openSnackBar}
         />
-        <DialogInstructions
-          cbOpenModal={this.hadleOpenModal}
-          openModal={openModal}
-        />
+        <DialogInstructions cbOpenModal={this.hadleOpenModal} openModal={openModal} />
       </div>
     );
   }
