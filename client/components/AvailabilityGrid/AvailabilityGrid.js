@@ -18,8 +18,6 @@ import SnackBarGrid from '../SnackBarGrid/SnackBarGrid';
 import DialogInstructions from './AvailabilityGridDialogInstructions';
 import { loadEvent } from '../../util/events';
 import { isEvent, isCurUser } from '../../util/commonPropTypes';
-import { listCalendarEvents } from '../../util/calendar';
-import { eventsMaxMinDatesForEvent } from '../../util/dates.utils';
 
 import styles from './availability-grid.css';
 
@@ -41,21 +39,18 @@ class AvailabilityGrid extends Component {
       jumpTimeIdx: null,
       event: {},
       allTimes: [],
-      calendarEvents: [],
     };
   }
 
-  async componentWillMount() {
-    const { event, dates, showHeatmap, curUser } = this.props;
+  componentWillMount() {
+    const { event, dates, showHeatmap } = this.props;
     const allDates = createDatesRange(dates);
     const allTimes = createTimesRange(dates);
     const grid = createGridComplete(allDates, allTimes, event);
     const backgroundColors = genHeatMapBackgroundColors(event.participants);
     const jumpTimeIdx = jumpTimeIndex(allTimes);
-    const calendarEvents = await listCalendarEvents(eventsMaxMinDatesForEvent(event), curUser);
-    console.log(calendarEvents);
     this.setState({
-      grid, backgroundColors, allTimes, showHeatmap, allDates, event, jumpTimeIdx, calendarEvents,
+      grid, backgroundColors, allTimes, showHeatmap, allDates, event, jumpTimeIdx,
     });
   }
 
@@ -66,7 +61,9 @@ class AvailabilityGrid extends Component {
     const grid = createGridComplete(allDates, allTimes, event);
     const backgroundColors = genHeatMapBackgroundColors(event.participants);
     const jumpTimeIdx = jumpTimeIndex(allTimes);
-    this.setState({ grid, backgroundColors, showHeatmap, allDates, event, allTimes, jumpTimeIdx });
+    this.setState({
+      grid, backgroundColors, showHeatmap, allDates, event, allTimes, jumpTimeIdx,
+    });
   }
 
   @autobind

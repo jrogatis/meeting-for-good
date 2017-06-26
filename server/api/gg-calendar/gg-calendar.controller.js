@@ -44,16 +44,21 @@ const listEvents = async (req, res) => {
   const calendarId = req.params.calendarId;
   const minDate = decodeURI(req.params.minDate);
   const maxDate = decodeURI(req.params.maxDate);
-  const curUser = await getCredencials(req);
-  if (!curUser.accessToken) return res.redirect('/auth');
-  gcal(curUser.accessToken)
-    .events.list(calendarId, { timeMax: maxDate, timeMin: minDate }, (err, data) => {
-      if (err) {
-        console.error('listEvents at gg-calendar.controler', err);
-        return res.status(500).send(err);
-      }
-      return res.status(200).json(data);
-    });
+  try {
+    const curUser = await getCredencials(req);
+    if (!curUser.accessToken) return res.redirect('/auth');
+    gcal(curUser.accessToken)
+      .events.list(calendarId, { timeMax: maxDate, timeMin: minDate }, (err, data) => {
+        if (err) {
+          console.error('listEvents at gg-calendar.controler', err);
+          return res.status(500).send(err);
+        }
+        return res.status(200).json(data);
+      });
+  } catch (err) { 
+    console.error('listEvents at gg-calendar.controler', err);
+    return res.status(500).send(err);
+  }
 };
 
 export { listCalendars, listEvents };

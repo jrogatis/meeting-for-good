@@ -28,7 +28,8 @@ const listEventsForCalendar = async (maxMinDates, id) => {
         credentials: 'same-origin',
         method: 'GET' });
     checkStatus(calendarEvents);
-    return parseJSON(calendarEvents);
+    const result = parseJSON(calendarEvents);
+    return result;
   } catch (err) {
     console.error('ERROR at listEvents calendar', err);
     return err;
