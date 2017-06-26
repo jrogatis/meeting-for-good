@@ -110,6 +110,7 @@ class NavBar extends Component {
             showPastEvents={showPastEvents}
             handleFilterToggle={this.handleFilterToggle}
             toggleAboutDialog={this.toggleAboutDialog}
+            cbToggleCalSetDialog={this.toggleCalSetDialog}
           />
           <AboutDialog cbOpenModal={this.toggleAboutDialog} openModal={openModal} />
           <CalendarIntegrationSettings

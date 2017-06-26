@@ -10,6 +10,7 @@ const UserSchema = new Schema({
   avatar: { type: String, required: false },
   accessToken: { type: String, required: false },
   refreshToken: { type: String, required: false },
+  selectedCalendarsIds: { type: [String], required: false, unique: true },
 });
 
 export default mongoose.model('User', UserSchema);

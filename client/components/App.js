@@ -79,7 +79,7 @@ class App extends Component {
       const nCurUser = await editCurUser(patches, curUser._id);
       this.setState({ curUser: nCurUser });
     } catch (err) {
-      console.log('error at app handleEditCurUser', err);
+      console.error('error at app handleEditCurUser', err);
       return err;
     }
   }

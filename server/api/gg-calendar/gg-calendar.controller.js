@@ -11,22 +11,35 @@ import User from '../user/user.model';
 const getCredencials = async req => User.findById(req.user);
 
 const listCalendars = async (req, res) => {
+  let curUser;
   try {
-    const curUser = await getCredencials(req);
-    console.log('curUser', curUser);
+    curUser = await getCredencials(req);
     if (!curUser.accessToken) return res.redirect('/auth');
-    gcal(curUser.accessToken).calendarList.list((err, data) => {
-      if (err) {
-        console.error(' error at listCalendars get calendarList', err);
-        return res.status(500).send(err);
-      }
-      return res.status(200).json(data);
-    });
   } catch (err) {
-    console.error('listCalendars', err);
+    console.error(' error at listCalendars get curUser', err);
     return res.status(500).send(err);
   }
+  gcal(curUser.accessToken).calendarList.list(async (err, calendarList) => {
+    if (err && err.code === 401) {
+      try {
+        const accessToken = await refresh.requestNewAccessToken('google', curUser.refreshToken);
+        console.log('newToken', accessToken);
+        await curUser.save({ accessToken });
+        gcal(curUser.accessToken).calendarList.list(
+          (err, calendarList) => {
+            if (err) return res.status(401).send(err);
+            console.log('listCall', calendarList);
+            return res.status(200).send(calendarList);
+          });
+      } catch (err) {
+        console.error('error at newToken', err);
+        return res.status(401).send(err);
+      }
+    }
+    return res.status(200).send(calendarList);
+  });
 };
+
 
 const listEvents = async (req, res) => {
   console.log('cheguei');
