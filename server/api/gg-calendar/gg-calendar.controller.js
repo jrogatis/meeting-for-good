@@ -9,24 +9,26 @@ import User from '../user/user.model';
 // Get the user's credentials.
 const getCredencials = async req => User.findById(req.user);
 
-const getCal = (res, curUser) => {
+const getCalWithNewToken = async (res, curUser) => {
+  try {
+    const accessToken = await refresh.requestNewAccessToken('google', curUser.refreshToken);
+    console.log('newToken getCalWithNewToken', accessToken);
+    await curUser.save({ accessToken });
+    gcal(curUser.accessToken).calendarList.list(
+      (err, calendarList) => {
+        if (err) return res.status(401).send(err);
+        console.log('getCalWithNewToken', calendarList);
+        return res.status(200).send(calendarList);
+      });
+  } catch (err) {
+    console.error('error at getCal', err);
+    return res.status(401).send(err);
+  }
+};
+
+const getCal = async (res, curUser) => {
   gcal(curUser.accessToken).calendarList.list(async (err, calendarList) => {
-    if (err && err.code === 401) {
-      try {
-        const accessToken = await refresh.requestNewAccessToken('google', curUser.refreshToken);
-        console.log('newToken', accessToken);
-        await curUser.save({ accessToken });
-        gcal(curUser.accessToken).calendarList.list(
-          (err, calendarList) => {
-            if (err) return res.status(401).send(err);
-            console.log('listCall', calendarList);
-            return res.status(200).send(calendarList);
-          });
-      } catch (err) {
-        console.error('error at getCal', err);
-        return res.status(401).send(err);
-      }
-    }
+    if (err && err.code === 401) await getCalWithNewToken(res, curUser);
     return res.status(200).send(calendarList);
   });
 };
