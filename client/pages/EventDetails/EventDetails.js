@@ -29,7 +29,6 @@ class EventDetails extends Component {
       try {
         const event = await this.props.cbLoadEvent(this.props.params.uid);
         const calendarEvents = await listCalendarEvents(eventsMaxMinDatesForEvent(event), curUser);
-        console.log(calendarEvents);
         this.setState({ event, curUser, calendarEvents });
       } catch (err) {
         console.error('eventDetails componentWillMount', err);
@@ -44,7 +43,8 @@ class EventDetails extends Component {
     if (isAuthenticated === true) {
       try {
         const event = await this.props.cbLoadEvent(this.props.params.uid);
-        this.setState({ event, curUser });
+        const calendarEvents = await listCalendarEvents(eventsMaxMinDatesForEvent(event), curUser);
+        this.setState({ event, curUser, calendarEvents });
       } catch (err) {
         console.error('eventDetails componentWillReceiveProps', err);
       }
@@ -101,7 +101,7 @@ class EventDetails extends Component {
   }
 
   render() {
-    const { event, openDrawer, curUser } = this.state;
+    const { event, openDrawer, curUser, calendarEvents } = this.state;
     if (event) {
       return (
         <div styleName="event">
@@ -114,6 +114,7 @@ class EventDetails extends Component {
             cbHandleEmailOwner={this.HandleEmailOwner}
             cbHandleEmailOwnerEdit={this.HandleEmailOwnerEdit}
             cbDeleteGuest={this.handleDeleteGuest}
+            calendarEvents={calendarEvents}
           />
           <GuestInviteDrawer
             open={openDrawer}
