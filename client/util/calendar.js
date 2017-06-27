@@ -25,14 +25,22 @@ const headerForGet = {
   method: 'GET',
 };
 
-const listEventsForCalendar = async (maxMinDates, id) => {
-  const urlToFetch = encodeURI(`/api/ggcalendar/listEvents/${id}/${maxMinDates.minDate.utc().format()}/${maxMinDates.maxDate.utc().format()}`);
+const loadCalendarEvents = async (urlToFetch) => {
   try {
-    const calendarEvents =
-      await fetch(encodeURI(urlToFetch), headerForGet);
+    const calendarEvents = await fetch(encodeURI(urlToFetch), headerForGet);
     checkStatus(calendarEvents);
     const result = parseJSON(calendarEvents);
     return result;
+  } catch (err) {
+    console.error('ERROR at loadCalendarEvents calendar', err);
+    return err;
+  }
+};
+
+const listEventsForCalendar = async (maxMinDates, id) => {
+  const urlToFetch = encodeURI(`/api/ggcalendar/listEvents/${id}/${maxMinDates.minDate.utc().format()}/${maxMinDates.maxDate.utc().format()}`);
+  try {
+    return await loadCalendarEvents(urlToFetch);
   } catch (err) {
     console.error('ERROR at listEvents calendar', err);
     return err;
