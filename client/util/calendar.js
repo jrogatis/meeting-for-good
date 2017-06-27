@@ -46,6 +46,7 @@ const listEventsForCalendar = async (maxMinDates, id) => {
     return err;
   }
 };
+
 const flatCalendarEvents = async (calendarIds, maxMinDates) => {
   const events = [];
   await Promise.all(calendarIds.map(

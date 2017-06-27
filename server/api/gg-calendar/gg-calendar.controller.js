@@ -9,15 +9,7 @@ import User from '../user/user.model';
 // Get the user's credentials.
 const getCredencials = async req => User.findById(req.user);
 
-const listCalendars = async (req, res) => {
-  let curUser;
-  try {
-    curUser = await getCredencials(req);
-    if (!curUser.accessToken) return res.redirect('/auth');
-  } catch (err) {
-    console.error(' error at listCalendars get curUser', err);
-    return res.status(500).send(err);
-  }
+const getCal = (res, curUser) => {
   gcal(curUser.accessToken).calendarList.list(async (err, calendarList) => {
     if (err && err.code === 401) {
       try {
@@ -31,12 +23,24 @@ const listCalendars = async (req, res) => {
             return res.status(200).send(calendarList);
           });
       } catch (err) {
-        console.error('error at newToken', err);
+        console.error('error at getCal', err);
         return res.status(401).send(err);
       }
     }
     return res.status(200).send(calendarList);
   });
+};
+
+const listCalendars = async (req, res) => {
+  let curUser;
+  try {
+    curUser = await getCredencials(req);
+    if (!curUser.accessToken) return res.redirect('/auth');
+  } catch (err) {
+    console.error(' error at listCalendars get curUser', err);
+    return res.status(500).send(err);
+  }
+  return getCal(res, curUser);
 };
 
 
