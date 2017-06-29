@@ -45,6 +45,7 @@ CellGrid.propTypes = {
     time: PropTypes.instanceOf(Date).isRequired,
     participants: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.String })).isRequired,
     notParticipants: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.String })).isRequired,
+    eventCalendarId: PropTypes.string,
     disable: PropTypes.bool,
   }).isRequired,
 };

@@ -43,24 +43,28 @@ class AvailabilityGrid extends Component {
   }
 
   componentWillMount() {
-    const { event, dates, showHeatmap } = this.props;
+    const { event, dates, showHeatmap, calendarEvents } = this.props;
     const allDates = createDatesRange(dates);
     const allTimes = createTimesRange(dates);
-    const grid = createGridComplete(allDates, allTimes, event);
+    const grid = createGridComplete(allDates, allTimes, event, calendarEvents);
     const backgroundColors = genHeatMapBackgroundColors(event.participants);
     const jumpTimeIdx = jumpTimeIndex(allTimes);
-
-    this.setState({ grid, backgroundColors, allTimes, showHeatmap, allDates, event, jumpTimeIdx });
+    this.setState({
+      grid, backgroundColors, allTimes, showHeatmap, allDates, event, jumpTimeIdx,
+    });
   }
 
   componentWillReceiveProps(nextProps) {
     const { event, dates, showHeatmap } = nextProps;
+    const { calendarEvents } = this.props;
     const allDates = createDatesRange(dates);
     const allTimes = createTimesRange(dates);
-    const grid = createGridComplete(allDates, allTimes, event);
+    const grid = createGridComplete(allDates, allTimes, event, calendarEvents);
     const backgroundColors = genHeatMapBackgroundColors(event.participants);
     const jumpTimeIdx = jumpTimeIndex(allTimes);
-    this.setState({ grid, backgroundColors, showHeatmap, allDates, event, allTimes, jumpTimeIdx });
+    this.setState({
+      grid, backgroundColors, showHeatmap, allDates, event, allTimes, jumpTimeIdx,
+    });
   }
 
   @autobind
@@ -223,10 +227,7 @@ class AvailabilityGrid extends Component {
           noGuests={snackBarNoGuests}
           openSnackBar={openSnackBar}
         />
-        <DialogInstructions
-          cbOpenModal={this.hadleOpenModal}
-          openModal={openModal}
-        />
+        <DialogInstructions cbOpenModal={this.hadleOpenModal} openModal={openModal} />
       </div>
     );
   }
@@ -240,6 +241,7 @@ AvailabilityGrid.defaultProps = {
   event: () => { console.log('event prop validation not set!'); },
   curUser: () => { console.log('curUser prop validation not set!'); },
   heightlightedUser: '',
+  calendarEvents: [],
 };
 
 AvailabilityGrid.propTypes = {
@@ -263,6 +265,7 @@ AvailabilityGrid.propTypes = {
   // Current user
   curUser: isCurUser,
   heightlightedUser: PropTypes.string,
+  calendarEvents: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default cssModules(AvailabilityGrid, styles);

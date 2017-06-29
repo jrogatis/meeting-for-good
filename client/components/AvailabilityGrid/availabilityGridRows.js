@@ -23,6 +23,7 @@ const Cell = (quarter, columnIndex, props) => {
       rowIndex={rowIndex}
       columnIndex={columnIndex}
       heightlightedUser={heightlightedUser}
+      eventCalendarId={quarter.eventCalendarId}
     />
   );
 };

@@ -4,6 +4,8 @@ import autobind from 'autobind-decorator';
 import { browserHistory } from 'react-router';
 import PropTypes from 'prop-types';
 
+import { listCalendarEvents } from '../../util/calendar';
+import { eventsMaxMinDatesForEvent } from '../../util/dates.utils';
 import EventDetailsComponent from '../../components/EventDetailsComponent/EventDetailsComponent';
 import styles from './event-details.css';
 import GuestInviteDrawer from '../../components/GuestInviteDrawer/GuestInviteDrawer';
@@ -17,14 +19,20 @@ class EventDetails extends Component {
       openDrawer: false,
       curUser: {},
       isAuthenticated: false,
+      calendarEvents: [],
     };
   }
 
   async componentWillMount() {
     const { isAuthenticated, curUser } = this.props;
     if (isAuthenticated === true) {
-      const event = await this.props.cbLoadEvent(this.props.params.uid);
-      this.setState({ event, curUser });
+      try {
+        const event = await this.props.cbLoadEvent(this.props.params.uid);
+        const calendarEvents = await listCalendarEvents(eventsMaxMinDatesForEvent(event), curUser);
+        this.setState({ event, curUser, calendarEvents });
+      } catch (err) {
+        console.error('eventDetails componentWillMount', err);
+      }
     } else {
       this.props.cbOpenLoginModal(`/event/${this.props.params.uid}`);
     }
@@ -35,9 +43,10 @@ class EventDetails extends Component {
     if (isAuthenticated === true) {
       try {
         const event = await this.props.cbLoadEvent(this.props.params.uid);
-        this.setState({ event, curUser });
+        const calendarEvents = await listCalendarEvents(eventsMaxMinDatesForEvent(event), curUser);
+        this.setState({ event, curUser, calendarEvents });
       } catch (err) {
-        console.log('eventDetails componentWillReceiveProps', err);
+        console.error('eventDetails componentWillReceiveProps', err);
       }
     }
   }
@@ -92,7 +101,7 @@ class EventDetails extends Component {
   }
 
   render() {
-    const { event, openDrawer, curUser } = this.state;
+    const { event, openDrawer, curUser, calendarEvents } = this.state;
     if (event) {
       return (
         <div styleName="event">
@@ -105,6 +114,7 @@ class EventDetails extends Component {
             cbHandleEmailOwner={this.HandleEmailOwner}
             cbHandleEmailOwnerEdit={this.HandleEmailOwnerEdit}
             cbDeleteGuest={this.handleDeleteGuest}
+            calendarEvents={calendarEvents}
           />
           <GuestInviteDrawer
             open={openDrawer}
