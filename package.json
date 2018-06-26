@@ -15,7 +15,9 @@
     "dev": "cross-env NODE_ENV=development npx nodemon --watch 'server/**/*.js' -r dotenv/config --exec 'babel-node server/app.js'",
     "test": "cross-env NODE_ENV=testing mocha --compilers js:babel-core/register",
     "heroku-postbuild": "npm run build",
-    "postinstall": "node tools/postInstall.js"
+    "postinstall": "node tools/postInstall.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -105,7 +107,7 @@
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
     "passport-oauth2-refresh": "^1.0.0",
-    "pngquant-bin": "^3.1.1",
+    "pngquant-bin": "^4.0.0",
     "prop-types": "^15.5.10",
     "react": "^16.2.0",
     "react-addons-update": "^15.5.2",
@@ -134,7 +136,8 @@
     "webpack-bundle-analyzer": "^2.8.3",
     "webpack-config": "^7.0.0",
     "write-file-webpack-plugin": "^4.0.0",
-    "yargs": "^11.0.0"
+    "yargs": "^11.0.0",
+    "snyk": "^1.85.0"
   },
   "devDependencies": {
     "eslint": "^4.13.0",
@@ -147,5 +150,6 @@
     "webpack-dev-middleware": "^2.0.6",
     "webpack-dev-server": "^2.5.1",
     "webpack-hot-middleware": "^2.18.2"
-  }
+  },
+  "snyk": true
 }
