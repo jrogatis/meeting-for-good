@@ -64,7 +64,7 @@
     "connect-flash": "^0.1.1",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
-    "copy-webpack-plugin": "^4.0.1",
+    "copy-webpack-plugin": "^6.0.0",
     "cpy-cli": "^1.0.1",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.1",
