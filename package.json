@@ -95,7 +95,7 @@
     "moment-range": "^3.0.3",
     "mongoose": "^4.11.3",
     "morgan": "^1.8.2",
-    "nodemailer": "^4.0.1",
+    "nodemailer": "^6.4.16",
     "nodemailer-ses-transport": "^1.5.0",
     "nprogress": "^0.2.0",
     "offline-plugin": "^4.8.3",
