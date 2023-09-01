@@ -1,0 +1,88 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:extend:20180424':
+    - babel-cli > chokidar > fsevents > node-pre-gyp > request > extend:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:extend:20180424'
+        path: babel-cli > chokidar > fsevents > node-pre-gyp > request > extend
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > extend:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:extend:20180424'
+        path: >-
+          webpack > watchpack > chokidar > fsevents > node-pre-gyp > request >
+          extend
+    - favicons-webpack-plugin > webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > extend:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:extend:20180424'
+        path: >-
+          favicons-webpack-plugin > webpack > watchpack > chokidar > fsevents >
+          node-pre-gyp > request > extend
+  'npm:hoek:20180212':
+    - babel-cli > chokidar > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:hoek:20180212'
+        path: babel-cli > chokidar > fsevents > node-pre-gyp > hawk > hoek
+    - babel-cli > chokidar > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:hoek:20180212'
+        path: babel-cli > chokidar > fsevents > node-pre-gyp > hawk > boom > hoek
+    - babel-cli > chokidar > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:hoek:20180212'
+        path: babel-cli > chokidar > fsevents > node-pre-gyp > hawk > sntp > hoek
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:hoek:20180212'
+        path: webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > hoek
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:hoek:20180212'
+        path: >-
+          webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > boom
+          > hoek
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:hoek:20180212'
+        path: >-
+          webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > sntp
+          > hoek
+    - favicons-webpack-plugin > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:hoek:20180212'
+        path: >-
+          favicons-webpack-plugin > webpack > watchpack > chokidar > fsevents >
+          node-pre-gyp > hawk > hoek
+    - favicons-webpack-plugin > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:hoek:20180212'
+        path: >-
+          favicons-webpack-plugin > webpack > watchpack > chokidar > fsevents >
+          node-pre-gyp > hawk > boom > hoek
+    - favicons-webpack-plugin > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:hoek:20180212'
+        path: >-
+          favicons-webpack-plugin > webpack > watchpack > chokidar > fsevents >
+          node-pre-gyp > hawk > sntp > hoek
+  'npm:stringstream:20180511':
+    - babel-cli > chokidar > fsevents > node-pre-gyp > request > stringstream:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:stringstream:20180511'
+        path: >-
+          babel-cli > chokidar > fsevents > node-pre-gyp > request >
+          stringstream
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > stringstream:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:stringstream:20180511'
+        path: >-
+          webpack > watchpack > chokidar > fsevents > node-pre-gyp > request >
+          stringstream
+    - favicons-webpack-plugin > webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > stringstream:
+        patched: '2023-09-01T13:02:10.094Z'
+        id: 'npm:stringstream:20180511'
+        path: >-
+          favicons-webpack-plugin > webpack > watchpack > chokidar > fsevents >
+          node-pre-gyp > request > stringstream
