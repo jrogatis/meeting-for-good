@@ -134,7 +134,7 @@
     "webpack-bundle-analyzer": "^2.8.3",
     "webpack-config": "^7.0.0",
     "write-file-webpack-plugin": "^4.0.0",
-    "yargs": "^11.0.0"
+    "yargs": "^18.0.0"
   },
   "devDependencies": {
     "eslint": "^4.13.0",
